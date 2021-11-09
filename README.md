@@ -3,8 +3,8 @@ A portal for automating the process of teachers  to initiate a project and for s
 
 # Table of Contents
 
-* [Installation and Setup]()
-* [System Specifications]()
+* [Installation and Setup](#installation-and-setup)
+* [System Specifications](#system-specifications)
 
 # Installation and Setup
 Please follow the below instructions inorder to set up the repository and run the project on your system.
