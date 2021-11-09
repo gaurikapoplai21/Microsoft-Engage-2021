@@ -2,6 +2,24 @@
   /* fonts:  */
   --heading-font: "Nunito", sans-serif;
   --para-font: "Montserrat", sans-serif;
+
+  /* colors */
+  --primary-black: #1b1919;
+  --primary-black-faded: #1b191950;
+  --primary-white: #ffffff;
+  --primary-red: #c74d5d;
+  --primary-green: #259845;
+  --primary-blue: #336995;
+  --primary-dark-blue: #294d6b;
+  --primary-bg: #f0f6f6;
+  --grey-one: #ccd1d9;
+  --grey-two: #2d2d2d;
+  --grey-three: #706c6c;
+
+  /* other variables */
+  --custom-transition: all 0.3s ease-in-out;
+  --navbar-height: 80px;
+  --gutter: 42px;
 }
 body {
   margin: 0;
