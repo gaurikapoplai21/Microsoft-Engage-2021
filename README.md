@@ -5,6 +5,7 @@ A portal for automating the process of teachers  to initiate a project and for s
 
 * [Installation and Setup](#installation-and-setup)
 * [System Specifications](#system-specifications)
+* [Documentation](https://github.com/gaurikapoplai21/Microsoft-Engage-2021/tree/master/documentation)
 
 # Installation and Setup
 Please follow the below instructions inorder to set up the repository and run the project on your system.
@@ -122,6 +123,16 @@ python3 server.py
 ```
 
 # System Specifications
+
+| Specification | Version       | 
+|:-------------:|:-------------:|
+| Operating System | Windows 10 |
+| Processor     | Intel Core i5 7th gen | 
+| RAM           | 8 GB          |   
+| npm           | 6.13.4        |
+| node          | 12.16.1       |
+| Python        | 3.7.3         |
+   
 
 
 
