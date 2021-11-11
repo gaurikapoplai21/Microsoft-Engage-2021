@@ -12,7 +12,7 @@ It contains details about the tables and attributes.
 3. [Teams Table](#teams-table)
 4. [Files Table](#files-table)
 5. [Schedule Table](#schedule-table)
-6. [Software Specifications](#sofware-specifications)
+6. [Software Specifications](#software-specifications)
 
 ## User Table
 
