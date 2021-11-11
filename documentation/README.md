@@ -4,3 +4,5 @@ This contains the documentation made during the creation of the `Team-Up` applic
 
 1. [Database Documentation](https://github.com/gaurikapoplai21/Microsoft-Engage-2021/blob/master/documentation/DatabaseDocumentation.md)
 
+2. [API Documentation](https://github.com/gaurikapoplai21/Microsoft-Engage-2021/blob/master/documentation/APIDocumentation.md)
+
