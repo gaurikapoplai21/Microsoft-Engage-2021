@@ -48,8 +48,8 @@ This table contains the information about any event created by the teacher. In t
 8. **maxMarks**: These are the maximum marks for the event. This field is required.
 9. **eventName**: This is the name of the event. This field is required.
 10. **eventDescription**: This is the description of the event. This field is required.
-11. **participants**: This is the list of participants' UUIDs in the event.
-12. **teams**: This is the list of teams' UUIDs in the event. This field is required.
+11. **participants**: This is the list of participants' UUIDs in the event.This field is required.This list is empty by default.
+12. **teams**: This is the list of teams' UUIDs in the event. This field is required.This list is empty by default.
 13. **uploadedFiles**: This is the list of file IDs uploaded by the teacher for the event.
 14. **referenceLinks**: List of reference links uploaded by the teacher for the event.
 

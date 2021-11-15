@@ -9,7 +9,8 @@ const StudentDashboard = () => {
     },[])
     return (
         <div>
-            student dashboard
+           student dashboard
+
         </div>
     )
 }

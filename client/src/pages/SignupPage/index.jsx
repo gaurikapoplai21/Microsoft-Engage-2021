@@ -4,6 +4,9 @@ import Button from "@mui/material/Button";
 import { GET, POST } from "../../config/api";
 import { apiEndpoints } from "../../constants/apiEndpoints";
 import { encodePassword } from "../../utils/users";
+import { Card,Form,Col} from "react-bootstrap";
+
+
 
 //import "./SignupPage.module.css";
 
@@ -43,6 +46,7 @@ const SignupPage = () => {
           if (response.status === 200) {
             alert("Email already taken");
             
+            
           }
         })
         .catch((err) => {
@@ -72,54 +76,87 @@ const SignupPage = () => {
 
   return (
     <div>
-      <form action="">
-        <div>
-          <label htmlFor="userName">User Name</label>
-          <input
-            type="text"
-            name="userName"
-            id="userName"
-            autoComplete="off"
-            required
-            value={userRegistration.userName}
-            onChange={handleInput}
-          />
-        </div>
-        <div>
-          <label htmlFor="userType">User Type</label>
-          <select onChange={handleInput} name="userType">
-            <option value="student">Student</option>
-            <option value="teacher">Teacher</option>
-          </select>
-        </div>
-        <div>
-          <label htmlFor="email">Email</label>
-          <input
-            type="text"
-            name="email"
-            id="email"
-            autoComplete="off"
-            required
-            value={userRegistration.email}
-            onChange={handleInput}
-          />
-        </div>
-        <div>
-          <label htmlFor="password">Password</label>
-          <input
-            type="password"
-            name="password"
-            id="password"
-            autoComplete="off"
-            required
-            value={userRegistration.password}
-            onChange={handleInput}
-          />
-        </div>
-        <Button variant="contained" onClick={handleRegister}>
-          Register{" "}
-        </Button>
-      </form>
+      <Card border="dark" style={{ width: "40%" }}>
+        <Card.Body>
+          <Card.Title>Sign Up</Card.Title>
+          <Card.Text>
+            <form action="">
+              <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                  <span class="input-group-text" id="basic-addon1">
+                    User Name
+                  </span>
+                </div>
+                <input
+                  type="text"
+                  class="form-control"
+                  name="userName"
+                  id="userName"
+                  autoComplete="off"
+                  required
+                  value={userRegistration.userName}
+                  onChange={handleInput}
+                  placeholder="User Name"
+                  aria-label="User Name"
+                  aria-describedby="basic-addon1"
+                />
+              </div>
+              
+              <Form.Group as={Col} controlId="formGridState">
+                <Form.Select onChange={handleInput} name="userType">
+                  <option value="student">Student</option>
+                  <option value="teacher">Teacher</option>
+                </Form.Select>
+              </Form.Group>
+              <br />
+              <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                  <span class="input-group-text" id="basic-addon1">
+                    Email
+                  </span>
+                </div>
+                <input
+                  type="text"
+                  class="form-control"
+                  name="email"
+                  id="email"
+                  autoComplete="off"
+                  required
+                  value={userRegistration.email}
+                  onChange={handleInput}
+                  placeholder="Email"
+                  aria-label="Email"
+                  aria-describedby="basic-addon1"
+                />
+              </div>
+              <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                  <span class="input-group-text" id="basic-addon1">
+                    Password
+                  </span>
+                </div>
+                <input
+                  type="text"
+                  class="form-control"
+                  name="password"
+                  id="password"
+                  autoComplete="off"
+                  required
+                  value={userRegistration.password}
+                  onChange={handleInput}
+                  placeholder="password"
+                  aria-label="password"
+                  aria-describedby="basic-addon1"
+                />
+              </div>
+
+              <Button variant="contained" onClick={handleRegister}>
+                Register{" "}
+              </Button>
+            </form>
+          </Card.Text>
+        </Card.Body>
+      </Card>
     </div>
   );
 };

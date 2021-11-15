@@ -183,8 +183,8 @@ def create_event():
     try:
         createdBy = request.json['createdBy']
         createdOn = datetime.now()
-        registrationDeadline = datetime.strptime(request.json['registrationDeadline'], '%d-%m-%Y %H:%M:%S')
-        submissionDeadline = datetime.strptime(request.json['submissionDeadline'], '%d-%m-%Y %H:%M:%S')
+        registrationDeadline = request.json['registrationDeadline']
+        submissionDeadline = request.json['submissionDeadline']
         minTeamSize = request.json['minTeamSize']
         maxTeamSize = request.json['maxTeamSize']
         maxMarks = request.json['maxMarks']
@@ -192,8 +192,8 @@ def create_event():
         eventDescription = request.json['eventDescription']
         participants = []
         teams = []
-        uploadedFiles = list(request.json['uploadedFiles']) 
-        referenceLinks = list(request.json['referenceLinks']) 
+        uploadedFiles = request.json['uploadedFiles']
+        referenceLinks = list(request.json['referenceLinks'].split("\n")) 
         event = {
 
         "createdBy" : createdBy,
@@ -259,6 +259,32 @@ def get_event(eventId):
             status = 500,
             mimetype="application/json"
         )
+
+@app.route("/events/all",methods=["GET"])
+@cross_origin()
+def get_all_events():
+    try:
+        data = db.Events.find()
+        data = list(data)
+        for obj in data:
+             obj["_id"] = str(obj["_id"])
+             obj["createdOn"] = obj["createdOn"].strftime("%d/%m/%Y, %H:%M:%S")
+             #obj["registrationDeadline"] = obj["registrationDeadline"].strftime("%d/%m/%Y, %H:%M:%S")
+             #obj["submissionDeadline"] = obj["submissionDeadline"].strftime("%d/%m/%Y, %H:%M:%S")
+        return Response(
+            response = json.dumps(data),
+            status=200,
+            mimetype="application/json"
+        )
+
+    except Exception as e:
+        print(e)
+        return Response(
+            response=json.dumps({"message":"Events cannot be displayed"}),
+            status = 500,
+            mimetype="application/json"
+        )
+
 
     
 @app.route("/events/<eventId>/edit",methods=["PATCH"]) #can update participants and teams as well

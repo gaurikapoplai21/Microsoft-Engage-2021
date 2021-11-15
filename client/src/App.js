@@ -3,6 +3,7 @@ import "./App.css";
 import { Router, Route, Switch } from "react-router-dom";
 import Signin from "../src/pages/SigninPage/index"
 import Signup from "../src/pages/SignupPage/index"
+import Navbar from "../src/components/Navbar/index"
 
 
 // constants
@@ -16,7 +17,7 @@ import history from "./config/history";
 
 function App() {
   const user = 1;
-  const userType = userTypes.STUDENT;
+  const userType = userTypes.TEACHER;
 
   return (
     <div className="App">
@@ -33,7 +34,7 @@ function App() {
                 />
               ))}
             </Fragment>
-          ) : userType === userTypes.TEACHER ? (
+          ) : userType === userTypes.STUDENT ? (
             <Fragment>
               {signedInStudentRoutes.map((route, routeIdx) => (
                 <Route
@@ -58,8 +59,9 @@ function App() {
           )}
         </Switch>
       </Router>
+      {/* <Navbar />
       <Signup />
-      <Signin />
+      <Signin /> */}
     </div>
   );
 }
