@@ -1,4 +1,3 @@
-import { lazy } from "react";
 // constants
 import { routes } from "./routes";
 // components

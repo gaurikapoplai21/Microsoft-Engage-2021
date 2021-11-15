@@ -1,6 +1,9 @@
 import { Fragment } from "react";
 import "./App.css";
 import { Router, Route, Switch } from "react-router-dom";
+import Signin from "../src/pages/SigninPage/index"
+import Signup from "../src/pages/SignupPage/index"
+
 
 // constants
 import {
@@ -30,7 +33,7 @@ function App() {
                 />
               ))}
             </Fragment>
-          ) : userType === userTypes.STUDENT ? (
+          ) : userType === userTypes.TEACHER ? (
             <Fragment>
               {signedInStudentRoutes.map((route, routeIdx) => (
                 <Route
@@ -55,6 +58,8 @@ function App() {
           )}
         </Switch>
       </Router>
+      <Signup />
+      <Signin />
     </div>
   );
 }

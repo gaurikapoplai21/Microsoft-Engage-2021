@@ -11,19 +11,34 @@ export const SERVER_BASE_URL = "http://localhost:5000";
 
 // Axios Configuration
 const axiosInstance = axios.create({
-  baseURL: `${SERVER_BASE_URL}/api`,
+  baseURL: `${SERVER_BASE_URL}`,
   // headers can be added here
 });
 
-export const GET = (url, headers) => {
+/**
+ * 
+ * @param {String} url The endpoint of the GET request 
+ * @param {Object} headers Pass a custom headers object, if any
+ * @param {Number} timeout Pass the timeout in milliseconds
+ * @returns 
+ */
+export const GET = (url, headers, timeout) => {
   return axiosInstance({
     method: "get",
     url: url,
     headers: headers || {},
-    timeout: timeouts.TWO_MIN,
+    timeout: timeout || timeouts.TWO_MIN,
   });
 };
 
+/**
+ * 
+ * @param {String} url The endpoint of the GET request
+ * @param {Object} body The payload associated with the request
+ * @param {Object} headers Pass a custom headers object, if any
+ * @param {Number} timeout Pass the timeout in milliseconds
+ * @returns 
+ */
 export const POST = (url, body, headers, timeout) => {
   return axiosInstance({
     method: "post",
@@ -34,30 +49,56 @@ export const POST = (url, body, headers, timeout) => {
   });
 };
 
-export const PUT = (url, body, headers) => {
+/**
+ * 
+ * @param {String} url The endpoint of the GET request
+ * @param {Object} body The payload associated with the request
+ * @param {Object} headers Pass a custom headers object, if any
+ * @param {Number} timeout Pass the timeout in milliseconds
+ * @returns 
+ */
+export const PUT = (url, body, headers, timeout) => {
   return axiosInstance({
     method: "put",
     url: url,
     headers: headers || {},
     data: body || {},
-    timeout: timeouts.TWO_MIN,
+    timeout: timeout || timeouts.TWO_MIN,
   });
 };
-export const PATCH = (url, body, headers) => {
+
+/**
+ * 
+ * @param {String} url The endpoint of the GET request
+ * @param {Object} body The payload associated with the request
+ * @param {Object} headers Pass a custom headers object, if any
+ * @param {Number} timeout Pass the timeout in milliseconds
+ * @returns 
+ */
+export const PATCH = (url, body, headers, timeout) => {
   return axiosInstance({
     method: "patch",
     url: url,
     headers: headers || {},
     data: body || {},
-    timeout: timeouts.TWO_MIN,
+    timeout: timeout || timeouts.TWO_MIN,
   });
 };
-export const DELETE = (url, body, headers) => {
+
+/**
+ * 
+ * @param {String} url The endpoint of the GET request
+ * @param {Object} body The payload associated with the request
+ * @param {Object} headers Pass a custom headers object, if any
+ * @param {Number} timeout Pass the timeout in milliseconds
+ * @returns 
+ */
+export const DELETE = (url, body, headers, timeout) => {
   return axiosInstance({
     method: "delete",
     url: url,
     headers: headers || {},
     data: body || {},
-    timeout: timeouts.TWO_MIN,
+    timeout: timeout || timeouts.TWO_MIN,
   });
 };
