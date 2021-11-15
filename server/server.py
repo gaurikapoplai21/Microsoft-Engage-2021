@@ -92,6 +92,27 @@ def get_user(userId):
             mimetype="application/json"
         )
 
+@app.route("/users/login/<email>",methods=["GET"])
+@cross_origin()
+def login_user(email):
+    try:
+        data = db.Users.find_one({"email":email})
+        data["_id"] = str(data["_id"])
+        data["joinedOn"] = data["joinedOn"].strftime("%d/%m/%Y, %H:%M:%S")
+        return Response(
+            response = json.dumps(data),
+            status=200,
+            mimetype="application/json"
+        )
+
+    except Exception as e:
+        print(e)
+        return Response(
+            response=json.dumps({"message":"User does not exist"}),
+            status = 500,
+            mimetype="application/json"
+        )
+
 @app.route("/users/<userId>",methods=["PATCH"])
 @cross_origin()
 def update_user(userId):
