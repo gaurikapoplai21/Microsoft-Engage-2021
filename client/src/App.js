@@ -1,9 +1,10 @@
-import { Fragment } from "react";
+import { Fragment, useState } from "react";
 import "./App.css";
 import { Router, Route, Switch } from "react-router-dom";
-import Signin from "../src/pages/SigninPage/index"
-import Signup from "../src/pages/SignupPage/index"
-import Navbar from "../src/components/Navbar/index"
+import LandingPage from "../src/pages/LandingPage"
+import TeacherDashboard from "../src/pages/TeacherPages/TeacherDashboard/index"
+import StudentDashboard from "../src/pages/StudentPages/StudentDashboard/index"
+import CreateEvent from "../src/pages/CreateEventPage/index"
 
 
 // constants
@@ -16,14 +17,16 @@ import {
 import history from "./config/history";
 
 function App() {
-  const user = 1;
+  const user = null;
   const userType = userTypes.TEACHER;
+
+ 
 
   return (
     <div className="App">
       <Router history={history} basename={process.env.PUBLIC_URL}>
         <Switch>
-          {user === null ? (
+          {/* {user === null ? (
             <Fragment>
               {signedOutRoutes.map((route, routeIdx) => (
                 <Route
@@ -56,12 +59,13 @@ function App() {
                 />
               ))}
             </Fragment>
-          )}
+          )} */}
+          <Route exact path="/" component={LandingPage} />
+          <Route path="/teacher-dashboard" component={TeacherDashboard} />
+          <Route path="/student-dashboard" component={StudentDashboard} />
+          <Route path="/createEvent" component={CreateEvent} />
         </Switch>
       </Router>
-      {/* <Navbar />
-      <Signup />
-      <Signin /> */}
     </div>
   );
 }

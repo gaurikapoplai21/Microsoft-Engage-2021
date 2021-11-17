@@ -1,53 +1,99 @@
-import {useEffect,useState} from 'react'
-import {pageTitles} from '../../../constants/app'
-import Button from "@mui/material/Button";
-import CreateEvent from "../../CreateEventPage/index"
-import { GET } from "../../../config/api";
-import { apiEndpoints} from "../../../constants/apiEndpoints"
-import {Card} from "react-bootstrap"
-
+import { useEffect, useState } from "react";
+import { pageTitles } from "../../../constants/app";
+import CreateEvent from "../../CreateEventPage/index";
+import { GET,DELETE } from "../../../config/api";
+import { apiEndpoints } from "../../../constants/apiEndpoints";
+import { Card, Row, Col,Button} from "react-bootstrap";
+import Navbar from "../../../components/Navbar/TeacherNavbar";
+import { useHistory } from "react-router-dom";
 
 // helper functions
-import {setWindowTitle} from '../../../utils/misc'
+import { setWindowTitle } from "../../../utils/misc";
 const TeacherDashboard = () => {
-     useEffect(()=>{
-        setWindowTitle(pageTitles.TEACHER_DASHBOARD)
-    },[])
-    let [card, setCard] = useState([]);
-    let [loading, setLoading] = useState(true);
-    useEffect(() => {
-        GET(apiEndpoints.EVENTS + "/all")
-        .then((res) => {
-          let template = res.data.map((item, i) => 
-          
-           <Card border="primary" style={{ width: '18rem' }}>
-    <Card.Body>
-      <Card.Title>{item.eventName}</Card.Title>
-      <Card.Text>
-       {item.eventDescription}
-      </Card.Text>
-    </Card.Body>
-  </Card>
-          );
+  let history = useHistory();
 
-          setCard(template);
-          setLoading(false);
-        })
-        .catch((err) => {
-          console.log(err);
-        });
-    }, []);
+  const deleteEvent = (eventId) => {
      
-    return (
-      <div>
-        {/* <h3>Events Created</h3>
-        <Button variant="contained" >
-          Create Event{" "}
-        </Button> */}
-        {/* <CreateEvent /> */}
-        {loading === false ? card : null}
-      </div>
-    );
-}
+     DELETE(apiEndpoints.EVENTS + "/" + eventId)
+       .then((response) => {
+         alert("Event successfully deleted");
+         window.location.reload(false);
 
-export default TeacherDashboard
+       })
+       .catch((err) => {
+         console.log(err)
+         alert("Event deletion unsuccessful");
+       });
+
+
+  }
+
+  useEffect(() => {
+    setWindowTitle(pageTitles.TEACHER_DASHBOARD);
+  }, []);
+  let [card, setCard] = useState([]);
+  let [loading, setLoading] = useState(true);
+  useEffect(() => {
+    GET(apiEndpoints.EVENTS + "/all")
+      .then((res) => {
+        let template = res.data.map((item, i) => (
+          <Col>
+            <Card
+              border="secondary"
+              style={{ width: "18rem", marginTop: "30px", marginLeft: "50px" }}
+            >
+              <Card.Header>{item.createdOn}</Card.Header>
+
+              <Card.Body>
+                <Card.Title>{item.eventName}</Card.Title>
+                <Card.Text>{item.eventDescription}</Card.Text>
+              </Card.Body>
+              <Card.Footer>
+                <Button variant="warning">Edit </Button>
+                <Button
+                  variant="secondary"
+                  style={{ marginLeft: "10px" }}
+                  onClick={() => deleteEvent(item._id)}
+                >
+                  Delete{" "}
+                </Button>
+              </Card.Footer>
+            </Card>
+          </Col>
+        ));
+
+        setCard(template);
+        setLoading(false);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }, []);
+  const heading = {
+    marginTop: "30px",
+    display: "inline-block",
+  };
+  const button = {
+    display: "inline-block",
+    marginLeft: "70%",
+  };
+  const handleCreateEvent = () => {
+    history.push("/createEvent");
+  };
+  return (
+    <div>
+      <Navbar userType="teacher"/>
+      <h3 style={heading}>Events Created</h3>
+      <Button variant="primary" style={button} onClick={handleCreateEvent}>
+        Create Event{" "}
+      </Button>
+      <Row xs={1} md={3} className="g-4">
+     
+      {loading === false ? card : null}
+     
+      </Row>
+    </div>
+  );
+};
+
+export default TeacherDashboard;

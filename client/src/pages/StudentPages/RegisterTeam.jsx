@@ -1,115 +1,9 @@
-import React from "react";
-import { useState } from "react";
-import { Form, Row, Col } from "react-bootstrap";
-import DatePicker from "react-datepicker";
-import Button from "@mui/material/Button";
-import "react-datepicker/dist/react-datepicker.css";
-import { GET, POST } from "../../config/api";
-import { apiEndpoints } from "../../constants/apiEndpoints";
-import Navbar from "../../components/Navbar/TeacherNavbar";
-import { useHistory } from "react-router-dom";
+import React from 'react'
 
-
-
-const Index = () => {
-  let history = useHistory();
-
-  const handleInput = (e) => {
-    const field = e.target.name;
-    const value = e.target.value;
-    setEvent({ ...event, [field]: value });
-  };
-
-  const [event, setEvent] = useState({
-    eventName: "",
-    eventDescription: "",
-    referenceLinks: "",
-    minTeamSize: "",
-    maxTeamSize: "",
-    maxMarks: "",
-    createdBy: "Gaurika",
-  });
-  const [registrationDeadline, setRegistrationDeadline] = useState('');
-  const [submissionDeadline, setSubmissionDeadline] = useState('');
-  const [selectedFile, setSelectedFile] = useState(null);
-  const handleChange = (event) => {
-    setSelectedFile(event.target.files[0]);
-  };
-  const handleSubmit = () => {
-    let data2;
-    console.log(selectedFile)
-    if(selectedFile !== null)
-    {
-        const data3 = {
-          uploadedFiles: selectedFile.name,
-        };
-        const data = {
-          registrationDeadline: registrationDeadline,
-          submissionDeadline: submissionDeadline,
-        };
-         data2 = {
-          ...event,
-          ...data,
-          ...data3,
-        };
-
-    }
-    else
-    {
-         const data = {
-           registrationDeadline: registrationDeadline,
-           submissionDeadline: submissionDeadline
-         };
-          data2 = {
-           ...event,
-           ...data,
-         };
-
-    }
-    
-    
-    if(data2.registrationDeadline===''||data2.submissionDeadline===''||data2.eventName===''||
-    data2.eventDescription===''||data2.minTeamSize===''||data2.maxTeamSize===''||data2.maxMarks=='')
-    {
-        alert("All fields except Reference links and files are mandatory")
-    }
-    else
-    {   if(data2.referenceLinks===''||data2.uploadedFiles==='')
-        {
-            data2.referenceLinks= "#deadbeef"
-            data2.uploadedFiles= "#deadbeef"
-
-        }
-        POST(apiEndpoints.EVENTS, data2)
-          .then((response) => {
-            alert("event successfully created");
-            history.push("/teacher-dashboard");
-
-            window.location.reload(false)
-          })
-          .catch((err) => {
-            alert("event creation unsuccessful");
-          });
-        setEvent({
-          eventName: "",
-          eventDescription: "",
-          referenceLinks: "",
-          minTeamSize: "",
-          maxTeamSize: "",
-          maxMarks: "",
-          createdBy: "Gaurika",
-        });
-        setRegistrationDeadline('');
-        setSubmissionDeadline('');
-        setSelectedFile(null);
-
-    }
-    //check for compulsory fields
-    
-  };
-  return (
-    <div>
-      <Navbar userType="teacher"/>
+const RegisterTeam = () => {
+    return (
+        <div>
+            <Navbar userType="student"/>
       <br />
       <h2> Create an Event </h2>
       <br />
@@ -208,7 +102,9 @@ const Index = () => {
         </Form>
       </div>
     </div>
-  );
-};
+        </div>
+    )
+}
 
-export default Index;
+export default RegisterTeam
+

@@ -5,12 +5,33 @@ import { apiEndpoints } from "../../constants/apiEndpoints";
 import { GET } from "../../config/api";
 import { decodePassword } from "../../utils/users";
 import { Card } from "react-bootstrap";
-
-//front end and switch between register and login
+import { useHistory } from "react-router-dom";
 
 // helper functions
 import { setWindowTitle } from "../../utils/misc";
 const SigninPage = () => {
+  let history = useHistory();
+  const [loggedin, setloggedin] = useState(
+    {
+      "login" : false,
+      "loginType": ""
+    }
+  );
+  useEffect(() => {
+    if (loggedin) {
+      if(loggedin.loginType === "teacher")
+      {
+        history.push("/teacher-dashboard");
+
+      }
+      else if(loggedin.loginType === "student")
+      {
+        history.push("/student-dashboard");
+      }
+      
+    }
+  }, [loggedin]);
+
   useEffect(() => {
     setWindowTitle(pageTitles.SIGNIN);
   }, []);
@@ -36,7 +57,11 @@ const SigninPage = () => {
             alert("Server not able to log you in.");
           } else if (response.status === 200) {
             if (userLogin.password === decodePassword(response.data.password)) {
-              alert("Login successful");
+              console.log("Login successful");
+              setloggedin({
+                login: true,
+                loginType: response.data.userType,
+              });
             } else {
               alert("Password does not match");
             }
@@ -44,6 +69,7 @@ const SigninPage = () => {
           console.log(response.data.password);
         })
         .catch(function (error) {
+          console.log(error);
           alert("User does not exist");
         });
 
@@ -54,11 +80,12 @@ const SigninPage = () => {
     }
   };
   const card = {
-    "width" : "40%",
-    "display": "flex",
+    width: "40%",
+    display: "flex",
     "align-items": "center",
-    "justify-content": "center"
-  }
+    "justify-content": "center",
+    display: "inline-block",
+  };
   return (
     <div>
       <Card border="dark" style={card}>

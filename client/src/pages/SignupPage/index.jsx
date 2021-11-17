@@ -76,7 +76,8 @@ const SignupPage = () => {
 
   return (
     <div>
-      <Card border="dark" style={{ width: "40%" }}>
+    
+      <Card border="dark" style={{ width: "40%", display: "inline-block" }}>
         <Card.Body>
           <Card.Title>Sign Up</Card.Title>
           <Card.Text>
@@ -101,7 +102,7 @@ const SignupPage = () => {
                   aria-describedby="basic-addon1"
                 />
               </div>
-              
+
               <Form.Group as={Col} controlId="formGridState">
                 <Form.Select onChange={handleInput} name="userType">
                   <option value="student">Student</option>

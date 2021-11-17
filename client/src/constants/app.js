@@ -6,6 +6,7 @@ import SigninPage from "../pages/SigninPage";
 import SignupPage from "../pages/SignupPage";
 import TeacherDashboard from "../pages/TeacherPages/TeacherDashboard";
 import StudentDashboard from "../pages/StudentPages/StudentDashboard";
+import LandingPage from "../pages/LandingPage";
 import NotfoundPage from "../pages/NotfoundPage";
 
 export const userTypes = {
@@ -14,10 +15,10 @@ export const userTypes = {
 };
 
 export const signedOutRoutes = [
-  { exact: true, path: routes.SIGNUP, component: SignupPage },
-  { exact: true, path: routes.SIGNIN, component: SigninPage },
-  { exact: true, path: "/", component: HomePage },
-  { exact: true, path: routes.HOME, component: HomePage },
+  { exact: true, path: routes.SIGNUP, component: LandingPage },
+  { exact: true, path: routes.SIGNIN, component: LandingPage },
+  { exact: true, path: "/", component: LandingPage },
+  { exact: true, path: routes.HOME, component: LandingPage },
 
   //{ exact: false, path: routes.NOTFOUND, component: NotfoundPage },
 ];
