@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 import { pageTitles } from "../../../constants/app";
-import CreateEvent from "../../CreateEventPage/index";
-import { GET, DELETE } from "../../../config/api";
+import { GET } from "../../../config/api";
 import { apiEndpoints } from "../../../constants/apiEndpoints";
 import { Card, Row, Col, Button } from "react-bootstrap";
 import Navbar from "../../../components/Navbar/TeacherNavbar";
@@ -9,10 +8,16 @@ import { useHistory } from "react-router-dom";
 
 // helper functions
 import { setWindowTitle } from "../../../utils/misc";
+
 const StudentDashboard = () => {
   let history = useHistory();
 
-  
+  const handleRegister = (eventId) => {
+      history.push({
+           pathname: '/register-team',
+           state: { _id: eventId }}
+           )
+    }
 
   useEffect(() => {
     setWindowTitle(pageTitles.STUDENT_DASHBOARD);
@@ -28,19 +33,16 @@ const StudentDashboard = () => {
               border="secondary"
               style={{ width: "18rem", marginTop: "30px", marginLeft: "50px" }}
             >
-              <Card.Header>Prof.  {item.createdBy}</Card.Header>
+              <Card.Header>Prof. {item.createdBy}</Card.Header>
 
               <Card.Body>
                 <Card.Title>{item.eventName}</Card.Title>
                 <Card.Text>{item.eventDescription}</Card.Text>
               </Card.Body>
               <Card.Footer>
-                <Button variant="warning">Register </Button>
-                <Button
-                  variant="secondary"
-                  style={{ marginLeft: "10px" }}
-                >
-                  Submit{" "}
+                <Button variant="warning" onClick={()=>handleRegister(item._id)}>Register for Event</Button>
+                <Button variant="secondary" style={{ marginTop: "10px" }}>
+                  Submission{" "}
                 </Button>
               </Card.Footer>
             </Card>
@@ -58,12 +60,12 @@ const StudentDashboard = () => {
     marginTop: "30px",
     display: "inline-block",
   };
- 
+
   return (
     <div>
-      <Navbar userType="student"/>
+      <Navbar userType="student" />
       <h3 style={heading}>Live Events</h3>
-     
+
       <Row xs={1} md={3} className="g-4">
         {loading === false ? card : null}
       </Row>

@@ -137,7 +137,7 @@ const SignupPage = () => {
                   </span>
                 </div>
                 <input
-                  type="text"
+                  type="password"
                   class="form-control"
                   name="password"
                   id="password"

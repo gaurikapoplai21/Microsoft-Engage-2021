@@ -9,6 +9,7 @@ import { useHistory } from "react-router-dom";
 
 // helper functions
 import { setWindowTitle } from "../../../utils/misc";
+
 const TeacherDashboard = () => {
   let history = useHistory();
 
@@ -49,7 +50,7 @@ const TeacherDashboard = () => {
                 <Card.Text>{item.eventDescription}</Card.Text>
               </Card.Body>
               <Card.Footer>
-                <Button variant="warning">Edit </Button>
+                <Button variant="warning" onClick={()=>history.push("/edit-event/" + item._id)}>Edit </Button>
                 <Button
                   variant="secondary"
                   style={{ marginLeft: "10px" }}
@@ -78,7 +79,7 @@ const TeacherDashboard = () => {
     marginLeft: "70%",
   };
   const handleCreateEvent = () => {
-    history.push("/createEvent");
+    history.push("/create-event");
   };
   return (
     <div>

@@ -5,6 +5,8 @@ import LandingPage from "../src/pages/LandingPage"
 import TeacherDashboard from "../src/pages/TeacherPages/TeacherDashboard/index"
 import StudentDashboard from "../src/pages/StudentPages/StudentDashboard/index"
 import CreateEvent from "../src/pages/CreateEventPage/index"
+import RegisterTeam from "../src/pages/StudentPages/RegisterTeam"
+import EditEvent from "../src/pages/EditEventPage/index"
 
 
 // constants
@@ -63,7 +65,9 @@ function App() {
           <Route exact path="/" component={LandingPage} />
           <Route path="/teacher-dashboard" component={TeacherDashboard} />
           <Route path="/student-dashboard" component={StudentDashboard} />
-          <Route path="/createEvent" component={CreateEvent} />
+          <Route path="/create-event" component={CreateEvent} />
+          <Route path="/register-team" component={RegisterTeam} />
+          <Route path="/edit-event/:id" component={EditEvent} />
         </Switch>
       </Router>
     </div>

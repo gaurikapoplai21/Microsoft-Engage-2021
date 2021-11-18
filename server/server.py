@@ -244,8 +244,8 @@ def get_event(eventId):
         data = db.Events.find_one({"_id":ObjectId(eventId)})
         data["_id"] = str(data["_id"])
         data["createdOn"] = data["createdOn"].strftime("%d/%m/%Y, %H:%M:%S")
-        data["registrationDeadline"] = data["registrationDeadline"].strftime("%d/%m/%Y, %H:%M:%S")
-        data["submissionDeadline"] = data["submissionDeadline"].strftime("%d/%m/%Y, %H:%M:%S")
+        #data["registrationDeadline"] = data["registrationDeadline"]
+        #data["submissionDeadline"] = data["submissionDeadline"]
         return Response(
             response = json.dumps(data),
             status=200,
@@ -297,14 +297,14 @@ def update_event(eventId):
 
             {
              "createdBy" : request.json["createdBy"],
-             "registrationDeadline" : datetime.strptime(request.json['registrationDeadline'], '%d-%m-%Y %H:%M:%S'),
-             "submissionDeadline" : datetime.strptime(request.json['submissionDeadline'], '%d-%m-%Y %H:%M:%S'),
+             "registrationDeadline" : request.json['registrationDeadline'],
+             "submissionDeadline" : request.json['submissionDeadline'],
              "minTeamSize" : request.json["minTeamSize"],
              "maxTeamSize" : request.json["maxTeamSize"],
              "maxMarks" : request.json["maxMarks"],
              "eventName" : request.json["eventName"],
              "eventDescription" : request.json["eventDescription"],
-             "uploadedFiles" : list(request.json["uploadedFiles"].split(",")),
+             "uploadedFiles" : request.json["uploadedFiles"],
              "referenceLinks" : list(request.json["referenceLinks"].split(",")),
             }
             }

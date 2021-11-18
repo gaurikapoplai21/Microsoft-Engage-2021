@@ -1,110 +1,152 @@
-import React from 'react'
+import React from "react";
+import {useState} from "react"
+import Navbar from "../../components/Navbar/TeacherNavbar";
+import { Form, Button, Row, Col } from "react-bootstrap";
 
-const RegisterTeam = () => {
-    return (
-        <div>
-            <Navbar userType="student"/>
+const RegisterTeam = (props) => {
+
+const handleInput = (e) => {
+   const field = e.target.name;
+   const value = e.target.value;
+   setTeam({ ...team, [field]: value });
+ };
+const [teamSize, setTeamSize] = useState(
+    {
+        size: 0
+    }
+)
+const [display, setDisplay] = useState(0)
+const handleTeamSize = (e) => {
+  const field = e.target.name;
+  const value = e.target.value;
+  setTeamSize({ ...teamSize,[field]:value });
+};
+const [team, setTeam] = useState(
+    {
+        teamName:"",
+        createdBy:"Gaurika",
+       
+
+        
+
+    }
+    )
+const handleSubmit = () => {
+    const obj = { ...team};
+    console.log(obj)
+    //get respective userId using email of each member
+    //append that userId to 
+    const data = {
+        "eventName": obj.eventName,
+        "createdBy": obj.createdBy,
+
+    }
+}
+
+const handleNext = () => {
+    console.log(props._id);
+    setDisplay(parseInt(teamSize.size))
+}
+  return (
+    <div>
+      <Navbar userType="student" />
       <br />
-      <h2> Create an Event </h2>
+      <h2> Register for Event </h2>
       <br />
       <div style={{ display: "block" }}>
         <Form style={{ width: "50%", display: "inline-block" }}>
-          <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
-            <Form.Label>Event Name</Form.Label>
-            <Form.Control
-              type="text"
-              name="eventName"
-              placeholder="Event Name"
-              value={event.eventName}
-              onChange={handleInput}
-            />
-          </Form.Group>
-          <Form.Group className="mb-3" controlId="exampleForm.ControlTextarea1">
-            <Form.Label>Event Description</Form.Label>
-            <Form.Control
-              as="textarea"
-              rows={3}
-              name="eventDescription"
-              value={event.eventDescription}
-              onChange={handleInput}
-            />
-          </Form.Group>
-          <Form.Group controlId="formFile" className="mb-3">
-            <Form.Label>Reference Files</Form.Label>
-            <Form.Control type="file" onChange={handleChange} />
-          </Form.Group>
-          <Form.Group className="mb-3" controlId="exampleForm.ControlTextarea1">
-            <Form.Label>Reference Links</Form.Label>
-            <Form.Control
-              as="textarea"
-              rows={3}
-              name="referenceLinks"
-              value={event.referenceLinks}
-              onChange={handleInput}
-            />
-          </Form.Group>
-          <br />
-          <Row>
-            <Col>
-              <Form.Label>Minimim Team Size</Form.Label>
+          <Form.Group
+            as={Row}
+            className="mb-3"
+            controlId="formPlaintextPassword"
+          >
+            <Form.Label column sm="2">
+              Team Name
+            </Form.Label>
+            <Col sm="10">
               <Form.Control
-                placeholder="Minimum Team Size"
-                name="minTeamSize"
-                value={event.minTeamSize}
+                type="text"
+                placeholder="Team Name"
+                name="teamName"
+                value={team.teamName}
                 onChange={handleInput}
               />
             </Col>
-            <Col>
-              <Form.Label>Maximum Team Size</Form.Label>
-              <Form.Control
-                placeholder="Maximum Team Size"
-                name="maxTeamSize"
-                value={event.maxTeamSize}
-                onChange={handleInput}
-              />
-            </Col>
-            <Col>
-              <Form.Label>Maximum Marks</Form.Label>
-              <Form.Control
-                placeholder="Maximum Marks"
-                name="maxMarks"
-                value={event.maxMarks}
-                onChange={handleInput}
-              />
-            </Col>
-          </Row>
+          </Form.Group>
           <br />
-          <Row>
-            <Col>
-              <Form.Label>Registration Deadline</Form.Label>
-              <DatePicker
-                name="registrationDeadline"
-                selected={registrationDeadline}
-                onChange={(date) => setRegistrationDeadline(date)}
-                dateFormat="dd/MM/yyyy"
-                minDate={new Date()}
+          <Form.Group
+            as={Row}
+            className="mb-3"
+            controlId="formPlaintextPassword"
+          >
+            <Form.Label column sm="2">
+              Team Size
+            </Form.Label>
+            <Col sm="5">
+              <Form.Control
+                type="text"
+                placeholder="Enter Team Size"
+                name="size"
+                value={teamSize.size}
+                onChange={handleTeamSize}
               />
             </Col>
-            <Col>
-              <Form.Label>Submission Deadline</Form.Label>
-              <DatePicker
-                selected={submissionDeadline}
-                onChange={(date) => setSubmissionDeadline(date)}
-                dateFormat="dd/MM/yyyy"
-                minDate={new Date()}
-              />
-            </Col>
-          </Row>
-          <br />
-          <Button onClick={handleSubmit} variant="contained" style={{marginBottom:"20px"}}>
-            Submit{" "}
+            <br />
+          </Form.Group>
+
+          <Button
+            variant="success"
+            style={{ marginBottom: "20px" }}
+            onClick={handleNext}
+          >
+            Next
           </Button>
+          <br />
+          {[...Array(display)].map((elementInArray, i) => (
+            <div className="" key={i}>
+              {" "}
+              <Form.Group
+                as={Row}
+                className="mb-3"
+                controlId="formPlaintextPassword"
+              >
+                <Form.Label column sm="2">
+                  Team Member
+                </Form.Label>
+                <Col sm="5">
+                  <Form.Control
+                    type="text"
+                    placeholder="Name"
+                    name={"member" + i}
+                    value={team.i}
+                    onChange={handleInput}
+                  />
+                </Col>
+                <Col sm="5">
+                  <Form.Control
+                    type="text"
+                    placeholder="Email ID"
+                    name={"email" + i}
+                    value={team.i}
+                    onChange={handleInput}
+                  />
+                </Col>
+              </Form.Group>
+            </div>
+          ))}
+          {display !== 0 ? (
+            <Button
+              variant="primary"
+              style={{ marginBottom: "20px" }}
+              onClick={handleSubmit}
+            >
+              Submit{" "}
+            </Button>
+          ) : null}
         </Form>
       </div>
     </div>
-        </div>
-    )
-}
+  );
+};
 
-export default RegisterTeam
-
+export default RegisterTeam;
