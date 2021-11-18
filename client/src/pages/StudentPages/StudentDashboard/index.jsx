@@ -12,12 +12,7 @@ import { setWindowTitle } from "../../../utils/misc";
 const StudentDashboard = () => {
   let history = useHistory();
 
-  const handleRegister = (eventId) => {
-      history.push({
-           pathname: '/register-team',
-           state: { _id: eventId }}
-           )
-    }
+ 
 
   useEffect(() => {
     setWindowTitle(pageTitles.STUDENT_DASHBOARD);
@@ -35,12 +30,12 @@ const StudentDashboard = () => {
             >
               <Card.Header>Prof. {item.createdBy}</Card.Header>
 
-              <Card.Body>
+              <Card.Body onClick={()=>{history.push("/event/student/" + item._id)}} style={{cursor:"pointer"}}>
                 <Card.Title>{item.eventName}</Card.Title>
                 <Card.Text>{item.eventDescription}</Card.Text>
               </Card.Body>
               <Card.Footer>
-                <Button variant="warning" onClick={()=>handleRegister(item._id)}>Register for Event</Button>
+                <Button variant="warning" onClick={()=>history.push("/register-team/" + item._id)}>Register for Event</Button>
                 <Button variant="secondary" style={{ marginTop: "10px" }}>
                   Submission{" "}
                 </Button>

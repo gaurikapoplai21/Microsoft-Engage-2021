@@ -41,16 +41,26 @@ const TeacherDashboard = () => {
           <Col>
             <Card
               border="secondary"
-              style={{ width: "18rem", marginTop: "30px", marginLeft: "50px" }}
+              style={{
+                width: "18rem",
+                marginTop: "30px",
+                marginLeft: "50px",
+                cursor: "pointer",
+              }}
             >
               <Card.Header>{item.createdOn}</Card.Header>
 
-              <Card.Body>
+              <Card.Body onClick={() => history.push("/event/teacher/" + item._id)}>
                 <Card.Title>{item.eventName}</Card.Title>
                 <Card.Text>{item.eventDescription}</Card.Text>
               </Card.Body>
               <Card.Footer>
-                <Button variant="warning" onClick={()=>history.push("/edit-event/" + item._id)}>Edit </Button>
+                <Button
+                  variant="warning"
+                  onClick={() => history.push("/edit-event/" + item._id)}
+                >
+                  Edit{" "}
+                </Button>
                 <Button
                   variant="secondary"
                   style={{ marginLeft: "10px" }}

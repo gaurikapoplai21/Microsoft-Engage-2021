@@ -21,7 +21,7 @@ const Index = () => {
 
   const handleSubmit = () => {
     let data2;
-    console.log(selectedFile);
+    console.log(registrationDeadline);
     if (selectedFile !== null) {
       const data3 = {
         uploadedFiles: selectedFile.name,
@@ -61,9 +61,13 @@ const Index = () => {
     ) {
       alert("All fields except Reference links and files are mandatory");
     } else {
-      if (data2.referenceLinks === "" || data2.uploadedFiles === "") {
-        data2.referenceLinks = "#deadbeef";
+      if (data2.uploadedFiles === "") {
+        
         data2.uploadedFiles = "#deadbeef";
+      }
+      if(data2.referenceLinks === "")
+      {
+         data2.referenceLinks = "#deadbeef";
       }
       PATCH(apiEndpoints.EVENTS + "/" + params.id + "/edit", data2)
         .then((response) => {
@@ -106,7 +110,7 @@ const Index = () => {
         setEvent({
           eventName: res.data.eventName,
           eventDescription: res.data.eventDescription,
-          referenceLinks: res.data.referenceLinks,
+          referenceLinks: res.data.referenceLinks.toString(),
           minTeamSize: res.data.minTeamSize,
           maxTeamSize: res.data.maxTeamSize,
           maxMarks: res.data.maxMarks,

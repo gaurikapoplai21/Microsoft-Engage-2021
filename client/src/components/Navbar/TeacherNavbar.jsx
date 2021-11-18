@@ -15,14 +15,17 @@ const TeacherNavbar = (props) => {
               <Navbar.Toggle aria-controls="responsive-navbar-nav" />
               <Navbar.Collapse id="responsive-navbar-nav">
                 <Nav>
-                  <Nav.Link href="/teacher-dashboard">Home</Nav.Link>
-                  <Nav.Link>Profile</Nav.Link>
-                  {props.userType === "teacher" ? (
-                    <Nav.Link>Evaluate</Nav.Link>
+                  {props.userType === "student" ? (
+                    <Nav.Link href="/student-dashboard">Home</Nav.Link>
                   ) : (
-                    <Nav.Link>Submit</Nav.Link>
+                    <Nav.Link href="/teacher-dashboard">Home</Nav.Link>
                   )}
-
+                  <Nav.Link>Profile</Nav.Link>
+                  <Nav>
+                    {props.userType === "student" ? (
+                      <Nav.Link>MyTeams</Nav.Link>
+                    ) : null}
+                  </Nav>
                   <Nav.Link style={{ marginLeft: "60vw" }} href="/">
                     Logout
                   </Nav.Link>

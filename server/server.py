@@ -305,7 +305,7 @@ def update_event(eventId):
              "eventName" : request.json["eventName"],
              "eventDescription" : request.json["eventDescription"],
              "uploadedFiles" : request.json["uploadedFiles"],
-             "referenceLinks" : list(request.json["referenceLinks"].split(",")),
+             "referenceLinks" : list(request.json['referenceLinks'].split("\n")) 
             }
             }
         )
@@ -483,10 +483,11 @@ def delete_file(fileId):
 @cross_origin()
 def create_team():
     try:
+        eventId = request.json['eventId']
         teamName = request.json['teamName']
         createdBy = request.json['createdBy']
         createdOn = datetime.now()
-        members = list(request.json['members'].split(","))
+        members = request.json['members']
         marksScored = -1
         uploadedFiles = []
         submittedOn = datetime.strptime("01-01-1970 00:00:00", '%d-%m-%Y %H:%M:%S')
@@ -495,6 +496,7 @@ def create_team():
        
         team = {
 
+        "eventId" : eventId,
         "teamName" : teamName,
         "createdBy" : createdBy,
         "createdOn" : createdOn,

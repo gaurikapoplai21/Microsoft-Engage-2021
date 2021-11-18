@@ -61,9 +61,13 @@ const Index = () => {
            registrationDeadline: registrationDeadline,
            submissionDeadline: submissionDeadline
          };
+         const data3 = {
+           uploadedFiles: ''
+         }
           data2 = {
            ...event,
            ...data,
+           ...data3
          };
 
     }
@@ -75,11 +79,15 @@ const Index = () => {
         alert("All fields except Reference links and files are mandatory")
     }
     else
-    {   if(data2.referenceLinks===''||data2.uploadedFiles==='')
+    {   if(data2.referenceLinks==='')
         {
             data2.referenceLinks= "#deadbeef"
-            data2.uploadedFiles= "#deadbeef"
+            
 
+        }
+        if(data2.uploadedFiles==='')
+        {
+          data2.uploadedFiles= "#deadbeef"
         }
         POST(apiEndpoints.EVENTS, data2)
           .then((response) => {
