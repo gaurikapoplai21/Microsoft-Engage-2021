@@ -35,19 +35,37 @@ const RegisterTeam = (props) => {
     const value = e.target.value;
     setEmail({ ...email,[field]:value });
   };
+
+  const [names, setNames] = useState([]);
+  const handleNames = (e) => {
+    const field = e.target.name;
+    const value = e.target.value;
+    setNames({ ...names, [field]: value });
+  };
   
   const handleSubmit = () => {
     const obj = { ...team };
+    console.log(email);
+    console.log(names)
     //get respective userId using email of each member
     //append that userId to members
+
+     let result = Object.keys(email).map((key) => email[key]);
+     console.log(result);
+
+     let result2 = Object.keys(names).map((key) => names[key]);
+     console.log(result2)
+
     let data = {
       teamName: obj.teamName,
       createdBy: obj.createdBy,
       eventId : params.id,
-      members:[]
+      members:[],
+      
+      names: result2,
+      emails: result
     };
-    let result = Object.keys(email).map((key) => email[key]);
-     console.log(result)
+    
  
     let promises = result.map((em,i)=>(
        GET(apiEndpoints.USERS + "/login/" + em)
@@ -157,9 +175,9 @@ const RegisterTeam = (props) => {
                   <Form.Control
                     type="text"
                     placeholder="Name"
-                    name={"member" + i}
+                    name={"name" + i}
                     // value={team.i}
-                    onChange={handleInput}
+                    onChange={handleNames}
                   />
                 </Col>
                 <Col sm="5">

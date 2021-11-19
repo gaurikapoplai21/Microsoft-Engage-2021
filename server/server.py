@@ -492,6 +492,8 @@ def create_team():
         uploadedFiles = []
         submittedOn = datetime.strptime("01/01/1970, 00:00:00", '%d/%m/%Y, %H:%M:%S')
         submissionLink = ""
+        names = request.json['names']
+        emails = request.json['emails']
 
        
         team = {
@@ -504,7 +506,9 @@ def create_team():
         "marksScored": marksScored,
         "uploadedFiles": uploadedFiles,
         "submissionLink": submissionLink,
-        "submittedOn": submittedOn
+        "submittedOn": submittedOn,
+        "names": names,
+        "emails":emails
        
         }
 
