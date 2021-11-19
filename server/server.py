@@ -490,7 +490,7 @@ def create_team():
         members = request.json['members']
         marksScored = -1
         uploadedFiles = []
-        submittedOn = datetime.strptime("01-01-1970 00:00:00", '%d-%m-%Y %H:%M:%S')
+        submittedOn = datetime.strptime("01/01/1970, 00:00:00", '%d/%m/%Y, %H:%M:%S')
         submissionLink = ""
 
        
@@ -539,6 +539,32 @@ def get_team(teamId):
         data["_id"] = str(data["_id"])
         data["createdOn"] = data["createdOn"].strftime("%d/%m/%Y, %H:%M:%S")
         data["submittedOn"] = data["submittedOn"].strftime("%d/%m/%Y, %H:%M:%S")
+
+        return Response(
+            response = json.dumps(data),
+            status=200,
+            mimetype="application/json"
+        )
+
+    except Exception as e:
+        print(e)
+        return Response(
+            response=json.dumps({"message":"Team does not exist"}),
+            status = 500,
+            mimetype="application/json"
+        )
+
+@app.route("/teams/event/<eventId>",methods=["GET"])
+@cross_origin()
+def get_team_per_event(eventId):
+    try:
+        data = db.Teams.find({"eventId":eventId})
+        data = list(data)
+        for obj in data:
+        
+            obj["_id"] = str(obj["_id"])
+            obj["createdOn"] = obj["createdOn"].strftime("%d/%m/%Y, %H:%M:%S")
+            obj["submittedOn"] = obj["submittedOn"].strftime("%d/%m/%Y, %H:%M:%S")
 
         return Response(
             response = json.dumps(data),

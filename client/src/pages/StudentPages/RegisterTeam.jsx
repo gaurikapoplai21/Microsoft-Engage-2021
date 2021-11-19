@@ -40,20 +40,17 @@ const RegisterTeam = (props) => {
     const obj = { ...team };
     //get respective userId using email of each member
     //append that userId to members
-    const data = {
+    let data = {
       teamName: obj.teamName,
       createdBy: obj.createdBy,
       eventId : params.id,
-      members : []
+      members:[]
     };
-     var result = Object.keys(email).map((key) => email[key]);
+    let result = Object.keys(email).map((key) => email[key]);
      console.log(result)
-
-    
-   
-
-    result.map((em,i)=>(
-      GET(apiEndpoints.USERS + "/login/" + em)
+ 
+    let promises = result.map((em,i)=>(
+       GET(apiEndpoints.USERS + "/login/" + em)
       .then((res) => {
        
          data.members.push(res.data._id)
@@ -64,15 +61,24 @@ const RegisterTeam = (props) => {
       })
   
     ))
+
+
     console.log(data)
-    POST("/teams",data)
-      .then((res) => {
-        alert("Team created successfully!")
-        history.push("/student-dashboard")
-      })
-      .catch((err) => {
-        console.log(err);
-      });
+    Promise.allSettled(promises).then(() => {
+       POST("/teams", data)
+         .then((res) => {
+           alert("Team created successfully!");
+           history.push("/student-dashboard");
+         })
+         .catch((err) => {
+           console.log(err);
+         });
+
+
+
+    }).catch((err) => console.log(err))
+    
+   
     
 
     

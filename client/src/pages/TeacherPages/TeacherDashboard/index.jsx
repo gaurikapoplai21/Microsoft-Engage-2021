@@ -50,7 +50,9 @@ const TeacherDashboard = () => {
             >
               <Card.Header>{item.createdOn}</Card.Header>
 
-              <Card.Body onClick={() => history.push("/event/teacher/" + item._id)}>
+              <Card.Body
+                onClick={() => history.push("/event/teacher/" + item._id)}
+              >
                 <Card.Title>{item.eventName}</Card.Title>
                 <Card.Text>{item.eventDescription}</Card.Text>
               </Card.Body>
@@ -67,6 +69,15 @@ const TeacherDashboard = () => {
                   onClick={() => deleteEvent(item._id)}
                 >
                   Delete{" "}
+                </Button>
+              </Card.Footer>
+              <Card.Footer>
+                <Button
+                  variant="primary"
+                 
+                  onClick={()=>history.push("/teams/teacher/" + item._id)}
+                >
+                  View Team Details{" "}
                 </Button>
               </Card.Footer>
             </Card>

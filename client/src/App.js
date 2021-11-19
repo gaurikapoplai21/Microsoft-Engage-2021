@@ -8,6 +8,8 @@ import CreateEvent from "../src/pages/CreateEventPage/index"
 import RegisterTeam from "../src/pages/StudentPages/RegisterTeam"
 import EditEvent from "../src/pages/EditEventPage/index"
 import EventDetails from "./pages/EventDetails"
+import EventTeamDetails from "./pages/EventTeamDetails";
+
 
 
 
@@ -71,6 +73,7 @@ function App() {
           <Route path="/register-team/:id" component={RegisterTeam} />
           <Route path="/edit-event/:id" component={EditEvent} />
           <Route path="/event/:userType/:id" component={EventDetails} />
+          <Route path="/teams/:userType/:id" component={EventTeamDetails} />
         </Switch>
       </Router>
     </div>
