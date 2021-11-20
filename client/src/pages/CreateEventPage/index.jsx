@@ -8,11 +8,14 @@ import { GET, POST } from "../../config/api";
 import { apiEndpoints } from "../../constants/apiEndpoints";
 import Navbar from "../../components/Navbar/TeacherNavbar";
 import { useHistory } from "react-router-dom";
-
+import { useSelector } from "react-redux";
+import { selectUser } from "../../features/userSlice";
 
 
 const Index = () => {
   let history = useHistory();
+    const user = useSelector(selectUser);
+
 
   const handleInput = (e) => {
     const field = e.target.name;
@@ -27,7 +30,7 @@ const Index = () => {
     minTeamSize: "",
     maxTeamSize: "",
     maxMarks: "",
-    createdBy: "Gaurika",
+    createdBy: user.name,
   });
   const [registrationDeadline, setRegistrationDeadline] = useState('');
   const [submissionDeadline, setSubmissionDeadline] = useState('');
@@ -94,7 +97,7 @@ const Index = () => {
             alert("event successfully created");
             history.push("/teacher-dashboard");
 
-            window.location.reload(false)
+            //window.location.reload(false)
           })
           .catch((err) => {
             alert("event creation unsuccessful");
@@ -106,7 +109,7 @@ const Index = () => {
           minTeamSize: "",
           maxTeamSize: "",
           maxMarks: "",
-          createdBy: "Gaurika",
+          createdBy: user.name,
         });
         setRegistrationDeadline('');
         setSubmissionDeadline('');

@@ -5,6 +5,8 @@ import {useHistory,useParams} from 'react-router-dom'
 import { GET, POST } from "../config/api";
 import { apiEndpoints } from "../constants/apiEndpoints";
 import {Card,ListGroup} from 'react-bootstrap'
+import { useSelector } from "react-redux";
+import { selectUser } from "../features/userSlice";
  
 
 
@@ -12,6 +14,8 @@ import {Card,ListGroup} from 'react-bootstrap'
 const EventDetails = () => {
     const params = useParams();
     let history = useHistory();
+    const user = useSelector(selectUser);
+
 
     const [event, setEvent] = useState({
       eventName: "",
@@ -19,7 +23,7 @@ const EventDetails = () => {
       minTeamSize: "",
       maxTeamSize: "",
       maxMarks: "",
-      createdBy: "Gaurika",
+      createdBy: user.name,
       createdOn: "",
       uploadedFiles: "",
       referenceLinks: "",

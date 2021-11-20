@@ -149,6 +149,9 @@ def update_user(userId):
             mimetype="application/json"
         )
 
+
+
+
 @app.route("/users/<userId>",methods=["DELETE"])
 @cross_origin()
 def delete_user(userId):
@@ -494,11 +497,13 @@ def create_team():
         submissionLink = ""
         names = request.json['names']
         emails = request.json['emails']
+        eventName = request.json['eventName']
 
        
         team = {
 
         "eventId" : eventId,
+        "eventName" : eventName,
         "teamName" : teamName,
         "createdBy" : createdBy,
         "createdOn" : createdOn,
@@ -583,7 +588,31 @@ def get_team_per_event(eventId):
             status = 500,
             mimetype="application/json"
         )
+@app.route("/teams/user/<userId>",methods=["GET"])
+@cross_origin()
+def get_team_per_user(userId):
+    try:
+        data = db.Teams.find({"members":userId})
+        data = list(data)
+        for obj in data:
+        
+            obj["_id"] = str(obj["_id"])
+            obj["createdOn"] = obj["createdOn"].strftime("%d/%m/%Y, %H:%M:%S")
+            obj["submittedOn"] = obj["submittedOn"].strftime("%d/%m/%Y, %H:%M:%S")
 
+        return Response(
+            response = json.dumps(data),
+            status=200,
+            mimetype="application/json"
+        )
+
+    except Exception as e:
+        print(e)
+        return Response(
+            response=json.dumps({"message":"Team does not exist"}),
+            status = 500,
+            mimetype="application/json"
+        )
 
 @app.route("/teams/<teamId>",methods=["DELETE"])
 @cross_origin()

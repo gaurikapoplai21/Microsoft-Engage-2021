@@ -1,5 +1,5 @@
 import React from 'react'
-import { useHistory, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import {useState, useEffect} from 'react';
 import { GET} from "../config/api";
 import {Card,Row,Col,ListGroup} from "react-bootstrap"
@@ -9,7 +9,6 @@ import Navbar from "../components/Navbar/TeacherNavbar";
 
 
 const EventTeamDetails = () => {
-    const histroy = useHistory();
     const params = useParams();
 
     let [card, setCard] = useState([]);
@@ -30,15 +29,15 @@ const EventTeamDetails = () => {
                   backgroundColor: "#E6E6FA",
                 }}
               >
-                <Card.Header>{item.createdOn}</Card.Header>
+                <Card.Header>Created on : {item.createdOn}</Card.Header>
 
                 <Card.Body style={{ cursor: "pointer" }}>
                   <Card.Title>{item.teamName}</Card.Title>
                   <Card.Text>
-                    {item.members.map((member, i) => (
+                    {item.names.map((member, i) => (
                       <div>
                         <br />
-                       
+                        
                         <ListGroup horizontal style={{display:"block"}}>
                           <ListGroup.Item>
                             {" "}
@@ -50,11 +49,12 @@ const EventTeamDetails = () => {
                           </ListGroup.Item>
                          
                         </ListGroup>
+                        
                       </div>
                     ))}
                   </Card.Text>
                 </Card.Body>
-                <Card.Footer>{item.createdBy}</Card.Footer>
+                <Card.Footer>Created By : {item.createdBy}</Card.Footer>
               </Card>
             </Col>
           ));
@@ -72,7 +72,6 @@ const EventTeamDetails = () => {
     };
     return (
       <div>
-        Hello {params.id}
         <Navbar userType="teacher" />
         <h3 style={heading}>Registered Teams</h3>
         <Row xs={1} md={1} className="g-4">

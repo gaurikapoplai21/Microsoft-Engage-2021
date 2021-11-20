@@ -6,19 +6,28 @@ import { GET } from "../../config/api";
 import { decodePassword } from "../../utils/users";
 import { Card } from "react-bootstrap";
 import { useHistory } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import {logins} from "../../features/userSlice"
+
+
+
 
 // helper functions
 import { setWindowTitle } from "../../utils/misc";
 const SigninPage = () => {
   let history = useHistory();
+  const dispatch = useDispatch();
+  
+  
   const [loggedin, setloggedin] = useState(
     {
-      "login" : false,
-      "loginType": ""
+      login : false,
+      loginType: ""
     }
   );
   useEffect(() => {
-    if (loggedin) {
+    if (loggedin) 
+    { 
       if(loggedin.loginType === "teacher")
       {
         history.push("/teacher-dashboard");
@@ -46,27 +55,33 @@ const SigninPage = () => {
   };
   const handleSubmit = () => {
     const data = { ...userLogin };
-    console.log(data);
     if (userLogin.email === "" || userLogin.password === "") {
       alert("Please fill all the fields.");
     } else {
       GET(apiEndpoints.USERS + "/login/" + userLogin.email, data)
         .then((response) => {
-          console.log(response);
-          if (response.status === 500) {
-            alert("Server not able to log you in.");
-          } else if (response.status === 200) {
+          
             if (userLogin.password === decodePassword(response.data.password)) {
               console.log("Login successful");
               setloggedin({
                 login: true,
                 loginType: response.data.userType,
+                
               });
+              dispatch(logins({
+                name: response.data.userName,
+                email: response.data.email,
+                id: response.data._id,
+                loggedIn: true,
+                userType:response.data.userType,
+                joinedOn : response.data.joinedOn
+
+
+              }))
             } else {
               alert("Password does not match");
             }
-          }
-          console.log(response.data.password);
+          
         })
         .catch(function (error) {
           console.log(error);

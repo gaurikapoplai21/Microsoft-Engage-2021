@@ -5,10 +5,14 @@ import { Form, Button, Row, Col } from "react-bootstrap";
 import { useHistory, useParams } from "react-router-dom";
 import { GET,POST } from "../../config/api";
 import { apiEndpoints } from "../../constants/apiEndpoints";
+import { useSelector } from "react-redux";
+import { selectUser } from "../../features/userSlice";
 
 const RegisterTeam = (props) => {
   const params = useParams();
   let history = useHistory();
+  const user = useSelector(selectUser)
+  console.log(params.eventName)
 
   const handleInput = (e) => {
     const field = e.target.name;
@@ -26,7 +30,7 @@ const RegisterTeam = (props) => {
   };
   const [team, setTeam] = useState({
     teamName: "",
-    createdBy: "Gaurika",
+    createdBy: user.name,
   });
   
   const [email, setEmail] = useState([])
@@ -45,23 +49,19 @@ const RegisterTeam = (props) => {
   
   const handleSubmit = () => {
     const obj = { ...team };
-    console.log(email);
-    console.log(names)
     //get respective userId using email of each member
     //append that userId to members
 
      let result = Object.keys(email).map((key) => email[key]);
-     console.log(result);
 
      let result2 = Object.keys(names).map((key) => names[key]);
-     console.log(result2)
-
+     
     let data = {
       teamName: obj.teamName,
       createdBy: obj.createdBy,
       eventId : params.id,
       members:[],
-      
+      eventName: params.eventName,
       names: result2,
       emails: result
     };

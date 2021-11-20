@@ -8,7 +8,9 @@ import CreateEvent from "../src/pages/CreateEventPage/index"
 import RegisterTeam from "../src/pages/StudentPages/RegisterTeam"
 import EditEvent from "../src/pages/EditEventPage/index"
 import EventDetails from "./pages/EventDetails"
-import EventTeamDetails from "./pages/EventTeamDetails";
+import EventTeamDetails from "./pages/EventTeamDetails"
+import Profile from "./pages/Profile"
+import MyTeams from  "./pages/MyTeams"
 
 
 
@@ -69,8 +71,9 @@ function App() {
           <Route exact path="/" component={LandingPage} />
           <Route path="/teacher-dashboard" component={TeacherDashboard} />
           <Route path="/student-dashboard" component={StudentDashboard} />
+          <Route path="/myTeams" component={MyTeams} />
           <Route path="/create-event" component={CreateEvent} />
-          <Route path="/register-team/:id" component={RegisterTeam} />
+          <Route path="/register-team/:id/:eventName" component={RegisterTeam} />
           <Route path="/edit-event/:id" component={EditEvent} />
           <Route path="/event/:userType/:id" component={EventDetails} />
           <Route path="/teams/:userType/:id" component={EventTeamDetails} />

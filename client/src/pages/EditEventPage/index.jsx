@@ -8,10 +8,14 @@ import Button from "@mui/material/Button";
 import { useParams } from "react-router-dom";
 import { GET, PATCH } from "../../config/api";
 import { apiEndpoints } from "../../constants/apiEndpoints";
+import { useSelector } from "react-redux";
+import { selectUser } from "../../features/userSlice";
 
 const Index = () => {
   const params = useParams();
   let history = useHistory();
+  const user = useSelector(selectUser);
+
 
   const handleInput = (e) => {
     const field = e.target.name;
@@ -74,7 +78,7 @@ const Index = () => {
           alert("event successfully updated");
           history.push("/teacher-dashboard");
 
-          window.location.reload(false);
+          //window.location.reload(false);
         })
         .catch((err) => {
           alert("event updation unsuccessful");
@@ -86,7 +90,7 @@ const Index = () => {
         minTeamSize: "",
         maxTeamSize: "",
         maxMarks: "",
-        createdBy: "Gaurika",
+        createdBy: user.name,
       });
       setRegistrationDeadline("");
       setSubmissionDeadline("");
@@ -102,7 +106,7 @@ const Index = () => {
     maxMarks: "",
     //registrationDeadline: "",
     //submissionDeadline: "",
-    createdBy: "Gaurika",
+    createdBy: user.name,
   });
   useEffect(() => {
     GET(apiEndpoints.EVENTS + "/" + params.id)
@@ -116,7 +120,7 @@ const Index = () => {
           maxMarks: res.data.maxMarks,
           //registrationDeadline: res.data.registrationDeadline,
           //submissionDeadline: res.data.submissionDeadline,
-          createdBy: "Gaurika"
+          createdBy: user.name
         });
         //setRegistrationDeadline(res.data.registrationDeadline)
         //setSubmissionDeadline(res.data.submissionDeadline)

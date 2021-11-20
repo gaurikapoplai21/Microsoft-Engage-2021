@@ -6,19 +6,24 @@ import { apiEndpoints } from "../../../constants/apiEndpoints";
 import { Card, Row, Col,Button} from "react-bootstrap";
 import Navbar from "../../../components/Navbar/TeacherNavbar";
 import { useHistory } from "react-router-dom";
+import { useSelector } from "react-redux";
+import { selectUser } from "../../../features/userSlice";
+import Profile from "../../Profile"
 
 // helper functions
 import { setWindowTitle } from "../../../utils/misc";
 
 const TeacherDashboard = () => {
   let history = useHistory();
+  const user = useSelector(selectUser);
+
 
   const deleteEvent = (eventId) => {
      
      DELETE(apiEndpoints.EVENTS + "/" + eventId)
        .then((response) => {
          alert("Event successfully deleted");
-         window.location.reload(false);
+         //window.location.reload(false);
 
        })
        .catch((err) => {
@@ -42,9 +47,9 @@ const TeacherDashboard = () => {
             <Card
               border="secondary"
               style={{
-                width: "18rem",
+                width: "20rem",
                 marginTop: "30px",
-                marginLeft: "50px",
+                marginLeft: "10%",
                 cursor: "pointer",
               }}
             >
@@ -90,7 +95,7 @@ const TeacherDashboard = () => {
       .catch((err) => {
         console.log(err);
       });
-  }, []);
+  }, [card]);
   const heading = {
     marginTop: "30px",
     display: "inline-block",
@@ -104,16 +109,23 @@ const TeacherDashboard = () => {
   };
   return (
     <div>
-      <Navbar userType="teacher"/>
-      <h3 style={heading}>Events Created</h3>
-      <Button variant="primary" style={button} onClick={handleCreateEvent}>
-        Create Event{" "}
-      </Button>
-      <Row xs={1} md={3} className="g-4">
-     
-      {loading === false ? card : null}
-     
-      </Row>
+      <Navbar userType="teacher" />
+      {user? <h2 style={{marginTop:"10px"}}>Hi {user.name}!</h2>:null}
+      {/* {user ? <Profile /> : null} */}
+      <div>
+        <h3 style={heading}>Events Created</h3>
+        <Button
+          variant="primary"
+          size="lg"
+          style={button}
+          onClick={handleCreateEvent}
+        >
+          Create Event{" "}
+        </Button>
+        <Row xs={1} md={3} className="g-4">
+          {loading === false ? card : null}
+        </Row>
+      </div>
     </div>
   );
 };

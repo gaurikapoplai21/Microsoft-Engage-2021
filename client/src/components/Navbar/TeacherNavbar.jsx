@@ -1,9 +1,19 @@
 import React from 'react'
 import { Navbar, Nav, Container } from "react-bootstrap";
 import logo from "../../assets/images/logo.png";
+import {useHistory} from "react-router-dom"
+import { useDispatch, useSelector } from "react-redux";
+import { logout } from "../../features/userSlice";
 
 
 const TeacherNavbar = (props) => {
+   let history = useHistory()
+   const dispatch = useDispatch();
+
+   const handleLogout = () =>{
+     dispatch(logout())
+     history.push("/")
+   }
     return (
       <div>
         <div>
@@ -16,17 +26,29 @@ const TeacherNavbar = (props) => {
               <Navbar.Collapse id="responsive-navbar-nav">
                 <Nav>
                   {props.userType === "student" ? (
-                    <Nav.Link href="/student-dashboard">Home</Nav.Link>
+                    <Nav.Link
+                      onClick={() => history.push("/student-dashboard")}
+                    >
+                      Home
+                    </Nav.Link>
                   ) : (
-                    <Nav.Link href="/teacher-dashboard">Home</Nav.Link>
+                    <Nav.Link
+                      onClick={() => history.push("/teacher-dashboard")}
+                    >
+                      Home
+                    </Nav.Link>
                   )}
-                  <Nav.Link>Profile</Nav.Link>
+                 
+
                   <Nav>
                     {props.userType === "student" ? (
-                      <Nav.Link>MyTeams</Nav.Link>
+                      <Nav.Link onClick={()=>history.push("/myTeams")}>MyTeams</Nav.Link>
                     ) : null}
                   </Nav>
-                  <Nav.Link style={{ marginLeft: "60vw" }} href="/">
+                  <Nav.Link
+                    style={{ marginLeft: "60vw" }}
+                    onClick={handleLogout}
+                  >
                     Logout
                   </Nav.Link>
                 </Nav>

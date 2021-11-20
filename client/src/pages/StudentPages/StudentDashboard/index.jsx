@@ -5,13 +5,17 @@ import { apiEndpoints } from "../../../constants/apiEndpoints";
 import { Card, Row, Col, Button } from "react-bootstrap";
 import Navbar from "../../../components/Navbar/TeacherNavbar";
 import { useHistory } from "react-router-dom";
+import {useSelector} from "react-redux";
+import {selectUser} from "../../../features/userSlice"
+import Profile from "../../Profile";
+
 
 // helper functions
 import { setWindowTitle } from "../../../utils/misc";
 
 const StudentDashboard = () => {
   let history = useHistory();
-
+  const user = useSelector(selectUser)
  
 
   useEffect(() => {
@@ -26,7 +30,7 @@ const StudentDashboard = () => {
           <Col>
             <Card
               border="secondary"
-              style={{ width: "18rem", marginTop: "30px", marginLeft: "50px" }}
+              style={{ width: "20rem", marginTop: "30px", marginLeft: "10%" }}
             >
               <Card.Header>Prof. {item.createdBy}</Card.Header>
 
@@ -35,8 +39,8 @@ const StudentDashboard = () => {
                 <Card.Text>{item.eventDescription}</Card.Text>
               </Card.Body>
               <Card.Footer>
-                <Button variant="warning" onClick={()=>history.push("/register-team/" + item._id)}>Register for Event</Button>
-                <Button variant="secondary" style={{ marginTop: "10px" }}>
+                <Button style={{display:"block",marginLeft:"25%"}} variant="warning" onClick={()=>history.push("/register-team/" + item._id + "/" + item.eventName)}>Register for Event</Button>
+                <Button style={{display:"block",marginTop:"10px",marginLeft:"25%"}} variant="secondary" >
                   Submission{" "}
                 </Button>
               </Card.Footer>
@@ -59,6 +63,8 @@ const StudentDashboard = () => {
   return (
     <div>
       <Navbar userType="student" />
+      {/* {user? <h2 style={{marginTop:"10px"}}>Hi {user.name}!</h2>:null} */}
+      {user? <Profile />:null}
       <h3 style={heading}>Live Events</h3>
 
       <Row xs={1} md={3} className="g-4">
