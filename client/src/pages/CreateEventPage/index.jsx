@@ -31,6 +31,7 @@ const Index = () => {
     maxTeamSize: "",
     maxMarks: "",
     createdBy: user.name,
+    createdId : user.id
   });
   const [registrationDeadline, setRegistrationDeadline] = useState('');
   const [submissionDeadline, setSubmissionDeadline] = useState('');
@@ -97,7 +98,6 @@ const Index = () => {
             alert("event successfully created");
             history.push("/teacher-dashboard");
 
-            //window.location.reload(false)
           })
           .catch((err) => {
             alert("event creation unsuccessful");

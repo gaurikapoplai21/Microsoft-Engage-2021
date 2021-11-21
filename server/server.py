@@ -185,6 +185,7 @@ def delete_user(userId):
 def create_event():
     try:
         createdBy = request.json['createdBy']
+        createdId = request.json['createdId']
         createdOn = datetime.now()
         registrationDeadline = request.json['registrationDeadline']
         submissionDeadline = request.json['submissionDeadline']
@@ -200,6 +201,7 @@ def create_event():
         event = {
 
         "createdBy" : createdBy,
+        "createdId" : createdId,
         "createdOn" : createdOn,
         "registrationDeadline" : registrationDeadline,
         "submissionDeadline" : submissionDeadline,
@@ -287,7 +289,32 @@ def get_all_events():
             status = 500,
             mimetype="application/json"
         )
+@app.route("/events/teacher/<createdId>",methods=["GET"])
+@cross_origin()
+def get_events_per_teacher(createdId):
+    try:
+        print("hello")
+        data = db.Events.find({"createdId":createdId})
+        print("hello")
+        data = list(data)
+        for obj in data:
+             obj["_id"] = str(obj["_id"])
+             obj["createdOn"] = obj["createdOn"].strftime("%d/%m/%Y, %H:%M:%S")
+             #obj["registrationDeadline"] = obj["registrationDeadline"].strftime("%d/%m/%Y, %H:%M:%S")
+             #obj["submissionDeadline"] = obj["submissionDeadline"].strftime("%d/%m/%Y, %H:%M:%S")
+        return Response(
+            response = json.dumps(data),
+            status=200,
+            mimetype="application/json"
+        )
 
+    except Exception as e:
+        print(e)
+        return Response(
+            response=json.dumps({"message":"Events cannot be displayed"}),
+            status = 500,
+            mimetype="application/json"
+        )
 
     
 @app.route("/events/<eventId>/edit",methods=["PATCH"]) #can update participants and teams as well

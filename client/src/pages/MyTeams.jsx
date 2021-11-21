@@ -9,6 +9,7 @@ import { Card, Button,ListGroup,Row} from "react-bootstrap";
 
 const MyTeams = () => {
   const user = useSelector(selectUser);
+  const history = useHistory()
 
   let [card, setCard] = useState([]);
   let [loading, setLoading] = useState(true);
@@ -45,7 +46,7 @@ const MyTeams = () => {
             </Card.Body>
             <Card.Footer className="text-muted">
               {" "}
-              <Button variant="secondary">Edit</Button>
+              <Button variant="secondary" onClick={()=>history.push("/edit-team/" + item._id + "/" + item.names.length)}>Edit</Button>
               <Button
                 variant="warning"
                 style={{ marginLeft: "10px" }}

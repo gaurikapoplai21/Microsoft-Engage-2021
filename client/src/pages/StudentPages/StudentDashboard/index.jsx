@@ -54,7 +54,7 @@ const StudentDashboard = () => {
       .catch((err) => {
         console.log(err);
       });
-  }, []);
+  }, [card]);
   const heading = {
     marginTop: "30px",
     display: "inline-block",

@@ -1,114 +1,102 @@
 import React from "react";
-import { useState } from "react";
-import Navbar from "../../components/Navbar/TeacherNavbar";
-import { Form, Button, Row, Col } from "react-bootstrap";
-import { useHistory, useParams } from "react-router-dom";
-import { GET,POST } from "../../config/api";
-import { apiEndpoints } from "../../constants/apiEndpoints";
+import { selectUser } from "../features/userSlice";
 import { useSelector } from "react-redux";
-import { selectUser } from "../../features/userSlice";
+import { useHistory, useParams } from "react-router-dom";
+import { useState, useEffect } from "react";
+import { GET, DELETE } from "../config/api";
+import Navbar from "../components/Navbar/TeacherNavbar";
+import { Form, Button, Row,Col} from "react-bootstrap";
 
-const RegisterTeam = (props) => {
-  const params = useParams();
-  let history = useHistory();
-  const user = useSelector(selectUser)
+const EditTeam = () => {
+const params = useParams();
+let history = useHistory();
+const user = useSelector(selectUser);
 
-  const handleInput = (e) => {
-    const field = e.target.name;
-    const value = e.target.value;
-    setTeam({ ...team, [field]: value });
-  };
-  const [teamSize, setTeamSize] = useState({
-    size: 0,
-  });
-  const [display, setDisplay] = useState(0);
-  const handleTeamSize = (e) => {
-    const field = e.target.name;
-    const value = e.target.value;
-    setTeamSize({ ...teamSize, [field]: value });
-  };
-  const [team, setTeam] = useState({
-    teamName: "",
-    createdBy: user.name,
-  });
-  
-  const [email, setEmail] = useState([])
-  const handleEmail = (e) => {
-    const field = e.target.name;
-    const value = e.target.value;
-    setEmail({ ...email,[field]:value });
-  };
+const handleInput = (e) => {
+  const field = e.target.name;
+  const value = e.target.value;
+  setTeam({ ...team, [field]: value });
+};
+const [teamSize, setTeamSize] = useState({
+  size: params.size,
+});
+const [display, setDisplay] = useState(parseInt(params.size));
+const handleTeamSize = (e) => {
+  const field = e.target.name;
+  const value = e.target.value;
+  setTeamSize({ ...teamSize, [field]: value });
+};
+const [team, setTeam] = useState({
+  teamName: "",
+  createdBy: user.name,
+});
 
-  const [names, setNames] = useState([]);
-  const handleNames = (e) => {
-    const field = e.target.name;
-    const value = e.target.value;
-    setNames({ ...names, [field]: value });
-  };
-  
-  const handleSubmit = () => {
-    const obj = { ...team };
-    //get respective userId using email of each member
-    //append that userId to members
+const [email, setEmail] = useState([]);
+const handleEmail = (e) => {
+  const field = e.target.name;
+  const value = e.target.value;
+  setEmail({ ...email, [field]: value });
+};
 
-     let result = Object.keys(email).map((key) => email[key]);
+const [names, setNames] = useState([]);
+const handleNames = (e) => {
+  const field = e.target.name;
+  const value = e.target.value;
+  setNames({ ...names, [field]: value });
+};
 
-     let result2 = Object.keys(names).map((key) => names[key]);
-     
-    let data = {
-      teamName: obj.teamName,
-      createdBy: obj.createdBy,
-      eventId : params.id,
-      members:[],
-      eventName: params.eventName,
-      names: result2,
-      emails: result
-    };
-    
- 
-    let promises = result.map((em,i)=>(
-       GET(apiEndpoints.USERS + "/login/" + em)
-      .then((res) => {
-       
-         data.members.push(res.data._id)
+const handleSubmit = () => {
+  const obj = { ...team };
+  //get respective userId using email of each member
+  //append that userId to members
 
-      })
-      .catch((err) => {
-        console.log(err);
-      })
-  
-    ))
+  let result = Object.keys(email).map((key) => email[key]);
 
+  let result2 = Object.keys(names).map((key) => names[key]);
 
-    console.log(data)
-    Promise.allSettled(promises).then(() => {
-       POST("/teams", data)
-         .then((res) => {
-           alert("Team created successfully!");
-           history.push("/student-dashboard");
-         })
-         .catch((err) => {
-           console.log(err);
-         });
-
-
-
-    }).catch((err) => console.log(err))
-    
-   
-    
-
-    
+  let data = {
+    teamName: obj.teamName,
+    createdBy: obj.createdBy,
+    eventId: params.id,
+    members: [],
+    eventName: params.eventName,
+    names: result2,
+    emails: result,
   };
 
-  const handleNext = () => {
-    setDisplay(parseInt(teamSize.size));
-  };
+//   let promises = result.map((em, i) =>
+//     GET(apiEndpoints.USERS + "/login/" + em)
+//       .then((res) => {
+//         data.members.push(res.data._id);
+//       })
+//       .catch((err) => {
+//         console.log(err);
+//       })
+//   );
+
+  console.log(data);
+//   Promise.allSettled(promises)
+//     .then(() => {
+    //   POST("/teams", data)
+    //     .then((res) => {
+    //       alert("Team created successfully!");
+    //       history.push("/student-dashboard");
+    //     })
+    //     .catch((err) => {
+    //       console.log(err);
+    //     });
+    // })
+    // .catch((err) => console.log(err));
+};
+
+const handleNext = () => {
+  setDisplay(parseInt(teamSize.size));
+};
   return (
     <div>
-      <Navbar userType="student" />
+      <Navbar userType={user.userType} />
       <br />
-      <h2> Register for Event </h2>
+      <h2> Edit your Team </h2>
       <br />
       <div style={{ display: "block" }}>
         <Form style={{ width: "80%", display: "inline-block" }}>
@@ -206,4 +194,4 @@ const RegisterTeam = (props) => {
   );
 };
 
-export default RegisterTeam;
+export default EditTeam;

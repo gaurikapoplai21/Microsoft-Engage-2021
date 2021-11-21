@@ -11,6 +11,7 @@ import EventDetails from "./pages/EventDetails"
 import EventTeamDetails from "./pages/EventTeamDetails"
 import Profile from "./pages/Profile"
 import MyTeams from  "./pages/MyTeams"
+import EditTeam from "./pages/EditTeam"
 
 
 
@@ -73,10 +74,14 @@ function App() {
           <Route path="/student-dashboard" component={StudentDashboard} />
           <Route path="/myTeams" component={MyTeams} />
           <Route path="/create-event" component={CreateEvent} />
-          <Route path="/register-team/:id/:eventName" component={RegisterTeam} />
+          <Route
+            path="/register-team/:id/:eventName"
+            component={RegisterTeam}
+          />
           <Route path="/edit-event/:id" component={EditEvent} />
           <Route path="/event/:userType/:id" component={EventDetails} />
           <Route path="/teams/:userType/:id" component={EventTeamDetails} />
+          <Route path="/edit-team/:id/:size" component={EditTeam} />
         </Switch>
       </Router>
     </div>

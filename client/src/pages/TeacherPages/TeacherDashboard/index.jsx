@@ -40,7 +40,7 @@ const TeacherDashboard = () => {
   let [card, setCard] = useState([]);
   let [loading, setLoading] = useState(true);
   useEffect(() => {
-    GET(apiEndpoints.EVENTS + "/all")
+    GET(apiEndpoints.EVENTS + "/teacher/" + user.id)
       .then((res) => {
         let template = res.data.map((item, i) => (
           <Col>
