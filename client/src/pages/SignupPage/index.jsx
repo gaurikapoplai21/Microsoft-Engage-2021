@@ -117,7 +117,7 @@ const SignupPage = () => {
                   </span>
                 </div>
                 <input
-                  type="text"
+                  type="email"
                   class="form-control"
                   name="email"
                   id="email"

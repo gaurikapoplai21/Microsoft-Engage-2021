@@ -293,9 +293,7 @@ def get_all_events():
 @cross_origin()
 def get_events_per_teacher(createdId):
     try:
-        print("hello")
         data = db.Events.find({"createdId":createdId})
-        print("hello")
         data = list(data)
         for obj in data:
              obj["_id"] = str(obj["_id"])
@@ -518,8 +516,8 @@ def create_team():
         createdBy = request.json['createdBy']
         createdOn = datetime.now()
         members = request.json['members']
-        marksScored = -1
-        uploadedFiles = []
+        marksScored = []
+        projectTitle = ""
         submittedOn = datetime.strptime("01/01/1970, 00:00:00", '%d/%m/%Y, %H:%M:%S')
         submissionLink = ""
         names = request.json['names']
@@ -536,7 +534,7 @@ def create_team():
         "createdOn" : createdOn,
         "members": members,
         "marksScored": marksScored,
-        "uploadedFiles": uploadedFiles,
+        "projectTitle": projectTitle,
         "submissionLink": submissionLink,
         "submittedOn": submittedOn,
         "names": names,
@@ -679,6 +677,8 @@ def update_team(teamId):
                 "teamName" : request.json["teamName"],
                 "createdBy" : request.json["createdBy"],
                 "members": request.json["members"],
+                "names": request.json["names"],
+                "emails": request.json["emails"]
             
             }
             }
@@ -714,18 +714,14 @@ def submit_project(teamId):
             {"$set":
 
             {
-                "uploadedFiles": request.json["uploadedFiles"],
+                "projectTitle": request.json["projectTitle"],
+                "submissionLink":request.json["submissionLink"],
                 "submittedOn" : datetime.now()
             
             }
             }
         )
-        if(dbResponse.modified_count == 0):
-            return Response(
-                response=json.dumps({"message":"no submission"}),
-                status=200,
-                mimetype = "application/json"
-            )
+        
         return Response(
             response=json.dumps({"message":"submission done"}),
             status=200,
@@ -756,12 +752,7 @@ def evaluate_project(teamId):
             }
             }
         )
-        if(dbResponse.modified_count == 0):
-            return Response(
-                response=json.dumps({"message":"marks field empty"}),
-                status=200,
-                mimetype = "application/json"
-            )
+       
         return Response(
             response=json.dumps({"message":"project evaluated"}),
             status=200,

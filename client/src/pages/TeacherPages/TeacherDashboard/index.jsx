@@ -110,8 +110,8 @@ const TeacherDashboard = () => {
   return (
     <div>
       <Navbar userType="teacher" />
-      {user? <h2 style={{marginTop:"10px"}}>Hi {user.name}!</h2>:null}
-      {/* {user ? <Profile /> : null} */}
+      {/* {user? <h2 style={{marginTop:"10px"}}>Hi {user.name}!</h2>:null} */}
+      {user ? <Profile /> : null}
       <div>
         <h3 style={heading}>Events Created</h3>
         <Button

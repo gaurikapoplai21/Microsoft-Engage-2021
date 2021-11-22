@@ -5,7 +5,9 @@ import { useHistory, useParams } from "react-router-dom";
 import { useState, useEffect } from "react";
 import { GET,DELETE } from "../config/api";
 import Navbar from "../components/Navbar/TeacherNavbar";
-import { Card, Button,ListGroup,Row} from "react-bootstrap";
+import { Card, Button,Row,Table} from "react-bootstrap";
+import Modal from "./ProjectSubmission";
+
 
 const MyTeams = () => {
   const user = useSelector(selectUser);
@@ -13,6 +15,15 @@ const MyTeams = () => {
 
   let [card, setCard] = useState([]);
   let [loading, setLoading] = useState(true);
+  const [modalShow, setModalShow] = useState(false);
+  const [teamId, setTeamId] = useState("")
+
+  const hidemodal = () => {
+    setModalShow(false);
+  };
+ 
+
+
   useEffect(() => {
     GET("/teams/user/" + user.id)
       .then((res) => {
@@ -31,28 +42,57 @@ const MyTeams = () => {
             <Card.Body>
               <Card.Title>{item.eventName}</Card.Title>
               <Card.Text>
-                <ListGroup.Item> Team Name : {item.teamName}</ListGroup.Item>
-                {item.names.map((member, i) => (
-                  <div>
-                    <br />
-
-                    <ListGroup horizontal style={{ display: "block" }}>
-                      <ListGroup.Item> Name : {item.names[i]}</ListGroup.Item>
-                      <ListGroup.Item> Email : {item.emails[i]}</ListGroup.Item>
-                    </ListGroup>
-                  </div>
-                ))}
+                Team Name : {item.teamName}
+                <br />
+                <br />
+                <Table responsive="sm" striped bordered hover>
+                  <thead>
+                    <tr>
+                      <th>Name</th>
+                      <th>Email</th>
+                    </tr>
+                  </thead>
+                  {item.names.map((member, i) => (
+                    <tbody>
+                      <tr>
+                        <td>{item.names[i]}</td>
+                        <td>{item.emails[i]}</td>
+                      </tr>
+                    </tbody>
+                  ))}
+                </Table>
               </Card.Text>
             </Card.Body>
             <Card.Footer className="text-muted">
               {" "}
-              <Button variant="secondary" onClick={()=>history.push("/edit-team/" + item._id + "/" + item.names.length)}>Edit</Button>
+              <Button
+                variant="secondary"
+                onClick={() =>
+                  history.push(
+                    "/edit-team/" + item._id + "/" + item.names.length
+                  )
+                }
+              >
+                Edit
+              </Button>
               <Button
                 variant="warning"
                 style={{ marginLeft: "10px" }}
                 onClick={() => handleDelete(item._id)}
               >
                 Delete
+              </Button>
+              <Button
+                style={{
+                  marginLeft: "10px",
+                }}
+                variant="success"
+                onClick={() => {
+                  setTeamId(item._id);
+                  setModalShow(true);
+                }}
+              >
+                Submit Project{" "}
               </Button>
             </Card.Footer>
           </Card>
@@ -64,7 +104,7 @@ const MyTeams = () => {
       .catch((err) => {
         console.log(err);
       });
-  }, [card]);
+  }, []);
   const handleDelete = (teamId) =>{
       DELETE("/teams/" + teamId)
         .then((response) => {
@@ -79,10 +119,9 @@ const MyTeams = () => {
   return (
     <div>
       <Navbar userType={user.userType} />
-      <h3 style={{marginTop:"30px"}}> {user.name}'s Teams</h3>
-      <Row xs={1} md={1} className="g-4">
+      <h3 style={{ marginTop: "30px" }}> {user.name}'s Teams</h3>
         {loading === false ? card : null}
-      </Row>
+      <Modal show={modalShow} hidemodalcallback={hidemodal}  teamId={teamId}/>
     </div>
   );
 };

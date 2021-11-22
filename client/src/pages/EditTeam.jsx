@@ -3,9 +3,11 @@ import { selectUser } from "../features/userSlice";
 import { useSelector } from "react-redux";
 import { useHistory, useParams } from "react-router-dom";
 import { useState, useEffect } from "react";
-import { GET, DELETE } from "../config/api";
+import { GET, PATCH } from "../config/api";
 import Navbar from "../components/Navbar/TeacherNavbar";
 import { Form, Button, Row,Col} from "react-bootstrap";
+import { apiEndpoints } from "../constants/apiEndpoints";
+
 
 const EditTeam = () => {
 const params = useParams();
@@ -57,37 +59,54 @@ const handleSubmit = () => {
   let data = {
     teamName: obj.teamName,
     createdBy: obj.createdBy,
-    eventId: params.id,
     members: [],
-    eventName: params.eventName,
     names: result2,
     emails: result,
   };
 
-//   let promises = result.map((em, i) =>
-//     GET(apiEndpoints.USERS + "/login/" + em)
-//       .then((res) => {
-//         data.members.push(res.data._id);
-//       })
-//       .catch((err) => {
-//         console.log(err);
-//       })
-//   );
+  let promises = result.map((em, i) =>
+    GET(apiEndpoints.USERS + "/login/" + em)
+      .then((res) => {
+        data.members.push(res.data._id);
+      })
+      .catch((err) => {
+        console.log(err);
+      })
+  );
 
   console.log(data);
-//   Promise.allSettled(promises)
-//     .then(() => {
-    //   POST("/teams", data)
-    //     .then((res) => {
-    //       alert("Team created successfully!");
-    //       history.push("/student-dashboard");
-    //     })
-    //     .catch((err) => {
-    //       console.log(err);
-    //     });
-    // })
-    // .catch((err) => console.log(err));
+  Promise.allSettled(promises)
+    .then(() => {
+      PATCH("/teams/" + params.id + "/edit", data)
+        .then((res) => {
+          alert("Team edited successfully!");
+          history.push("/student-dashboard");
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    })
+    .catch((err) => console.log(err));
 };
+
+ useEffect(() => {
+   GET("teams" + "/" + params.id)
+     .then((res) => {
+       setTeam({
+         teamName: res.data.teamName,
+         createdBy: user.name
+       });
+    //    res.data.names.map((item,i)=>(
+    //        setNames(...names,{item})
+    //    ))
+
+       console.log(names)
+      
+     })
+     .catch((err) => {
+       console.log(err);
+     });
+ }, []);
 
 const handleNext = () => {
   setDisplay(parseInt(teamSize.size));
