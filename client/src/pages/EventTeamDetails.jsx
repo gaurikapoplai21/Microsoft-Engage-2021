@@ -1,7 +1,7 @@
 import React from "react";
 import { useParams } from "react-router-dom";
 import { useState, useEffect } from "react";
-import { GET } from "../config/api";
+import { GET,POST } from "../config/api";
 import { Table, Button, Badge } from "react-bootstrap";
 import Navbar from "../components/Navbar/TeacherNavbar";
 import Modal from "./ProjectEvaluate";
@@ -19,12 +19,37 @@ const EventTeamDetails = () => {
    const hidemodal = () => {
      setModalShow(false);
    };
+  const [contacts, setContacts] = useState([])
+  const [eventName, setEventName] = useState('')
+  const [emails, setEmails] = useState()
  
+
+  const handleEmail = () => {
+
+    const data = {
+      "eventName" : eventName,
+      "contacts" : contacts
+    }
+    console.log(data)
+     const sendEmail = async () => {
+       const response = await POST("/email/initiatereminder", data);
+     };
+     sendEmail()
+       .then((response) => {
+         alert("Email reminder sent successfully");
+       })
+       .catch((err) => {
+         console.log(err);
+         alert("Email reminder not successful");
+       });
+
+  }
+
+  
 
   useEffect(() => {
     GET("/teams/event/" + params.id)
       .then((res) => {
-        console.log(res)
         let template = res.data.map((item, i) => (
           <div>
             <Table
@@ -67,15 +92,19 @@ const EventTeamDetails = () => {
                   <td>{item.projectTitle}</td>
                   <td> {item.submissionLink}</td>
                   <td>
-                    {item.marksScored.map((marks, i) => (
+                    {Object.keys(item.marksScored).map((key) => (
                       <div>
-                        {marks} <br />
+                        {item.marksScored[key]} <br />
                       </div>
                     ))}
                   </td>
                 </tr>
                 {item.submissionLink === "" ? (
                   <Button variant="warning" style={{ cursor: "text" }}>
+                    {item.emails.map((email, i) =>
+                      setContacts((oldArray) => [...oldArray, email])
+                    )}
+                    {setEventName(item.eventName)}
                     No Submission
                   </Button>
                 ) : item.marksScored.length !== 0 ? (
@@ -88,9 +117,11 @@ const EventTeamDetails = () => {
                     variant="primary"
                     onClick={() => {
                       setTeamNames(item.names);
+                      setEmails(item.emails);
+                      setEventName(item.eventName);
                       setTeamId(item._id);
                       setModalShow(true);
-                      setMembers(item.members)
+                      setMembers(item.members);
                     }}
                   >
                     Evaluate Project{" "}
@@ -155,10 +186,11 @@ const EventTeamDetails = () => {
     <div>
       <Navbar userType="teacher" />
       <h3 style={heading}>Registered Teams</h3>
+      <Button variant="primary" style={{marginLeft:"40%",cursor:"pointer"}} onClick={handleEmail}>Inititate Reminder</Button>
       <div style={{ marginLeft: "2%", marginRight: "2%" }}>
         {loading === false ? card : null}
       </div>
-      <Modal show={modalShow} hidemodalcallback={hidemodal} teamId={teamId} names={teamNames} members={members}/>
+      <Modal show={modalShow} hidemodalcallback={hidemodal} teamId={teamId} names={teamNames} members={members} emails={emails} eventName={eventName}/>
     </div>
   );
 };

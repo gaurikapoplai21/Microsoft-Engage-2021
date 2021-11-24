@@ -1,7 +1,7 @@
 import React from 'react'
 import {Modal, Button,Form} from 'react-bootstrap'
 import {useState} from 'react'
-import { PATCH } from "../config/api";
+import { PATCH,POST } from "../config/api";
 
 
 const ProjectSubmission = (props) => {
@@ -10,6 +10,10 @@ const ProjectSubmission = (props) => {
     const handleSubmit = () =>{
         
         const data = {...submission}
+        const emailData = {
+          "contacts" : props.members,
+          "eventName" : props.eventName
+        }
         console.log(data)
         if(re.test(data.submissionLink))
         {
@@ -21,13 +25,25 @@ const ProjectSubmission = (props) => {
           };
           editTeam()
             .then((response) => {
-              alert("Project submission successful");
-              props.hidemodalcallback();
+              
             })
             .catch((err) => {
               console.log(err);
               alert("Project submission unsuccessful");
             });
+
+            const sendEmail = async () => {
+              const response = await POST("/email/submissionreceived", emailData);
+            };
+            sendEmail()
+              .then((response) => {
+                alert("Project submission successful");
+                props.hidemodalcallback();
+              })
+              .catch((err) => {
+                console.log(err);
+                alert("Email reminder not successful");
+              });
 
           setSubmission({
             projectTitle: "",

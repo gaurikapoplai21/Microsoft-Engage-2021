@@ -17,6 +17,11 @@ const MyTeams = () => {
   let [loading, setLoading] = useState(true);
   const [modalShow, setModalShow] = useState(false);
   const [teamId, setTeamId] = useState("")
+  const [members, setMembers] = useState();
+  const [eventName, setEventName] = useState();
+
+
+  
 
   const hidemodal = () => {
     setModalShow(false);
@@ -90,6 +95,8 @@ const MyTeams = () => {
                 onClick={() => {
                   setTeamId(item._id);
                   setModalShow(true);
+                  setMembers(item.emails)
+                  setEventName(item.eventName)
                 }}
               >
                 Submit Project{" "}
@@ -121,7 +128,7 @@ const MyTeams = () => {
       <Navbar userType={user.userType} />
       <h3 style={{ marginTop: "30px" }}> {user.name}'s Teams</h3>
         {loading === false ? card : null}
-      <Modal show={modalShow} hidemodalcallback={hidemodal}  teamId={teamId}/>
+      <Modal show={modalShow} hidemodalcallback={hidemodal}  teamId={teamId} members = {members} eventName={eventName}/>
     </div>
   );
 };

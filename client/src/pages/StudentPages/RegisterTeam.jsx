@@ -64,8 +64,12 @@ const RegisterTeam = (props) => {
       names: result2,
       emails: result
     };
-    
- 
+    const emailData = {
+      "contacts" : result,
+      "eventName" : params.eventName
+    }
+    console.log(emailData);
+
     let promises = result.map((em,i)=>(
        GET(apiEndpoints.USERS + "/login/" + em)
       .then((res) => {
@@ -80,20 +84,30 @@ const RegisterTeam = (props) => {
     ))
 
 
-    console.log(data)
     Promise.allSettled(promises).then(() => {
-       POST("/teams", data)
-         .then((res) => {
-           alert("Team created successfully!");
-           history.push("/student-dashboard");
+       
+       POST("/teams", data).then((res) => {
+           console.log(res)
          })
          .catch((err) => {
            console.log(err);
          });
-
-
-
+         
     }).catch((err) => console.log(err))
+
+     const sendEmail = async () => {
+       const response = await POST("/email/teamregistered", emailData);
+     };
+     sendEmail()
+       .then((response) => {
+         console.log(response);
+         alert("Team created successfully!");
+         history.push("/student-dashboard");
+       })
+       .catch((err) => {
+         console.log(err);
+         alert("Email reminder not successful");
+       });
     
    
     

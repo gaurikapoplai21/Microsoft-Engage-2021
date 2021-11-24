@@ -4,7 +4,7 @@ import {useState,useEffect} from 'react'
 import {useHistory,useParams} from 'react-router-dom'
 import { GET, POST } from "../config/api";
 import { apiEndpoints } from "../constants/apiEndpoints";
-import {Card,ListGroup} from 'react-bootstrap'
+import {Card,ListGroup,Table} from 'react-bootstrap'
 import { useSelector } from "react-redux";
 import { selectUser } from "../features/userSlice";
  
@@ -26,7 +26,7 @@ const EventDetails = () => {
       createdBy: user.name,
       createdOn: "",
       uploadedFiles: "",
-      referenceLinks: "",
+      referenceLinks: [],
       registrationDeadline: "",
       submissionDeadline: ""
 
@@ -56,7 +56,7 @@ const EventDetails = () => {
     }, []);
     return (
       <div>
-        <Navbar userType={params.userType}/>
+        <Navbar userType={params.userType} />
         <h2 style={{ marginTop: "20px" }}> Event Details </h2>
         <br />
         <Card
@@ -75,39 +75,45 @@ const EventDetails = () => {
               {event.eventDescription}
               <br />
               <br />
-              {params.userType==="student"? <div><ListGroup.Item variant="light">
-                Professor :{" "}
-                {event.createdBy}
-              </ListGroup.Item><br /></div> : null}
-              <ListGroup.Item variant="light">
-                Registration Deadline :{" "}
-                {event.registrationDeadline.substring(0, 10)}
-              </ListGroup.Item>
-              <br />
-              <ListGroup.Item variant="light">
-                Submission Deadline :{" "}
-                {event.submissionDeadline.substring(0, 10)}
-              </ListGroup.Item>
-              <br />
-              <ListGroup.Item variant="light">
-                Mininmum Team Size : {event.minTeamSize}
-              </ListGroup.Item>
-              <br />
-              <ListGroup.Item variant="light">
-                Maximum Team Size : {event.maxTeamSize}
-              </ListGroup.Item>
-              <br />
-              <ListGroup.Item variant="light">
-                Maximum Marks : {event.maxMarks}
-              </ListGroup.Item>
-              <br />
-              <ListGroup.Item variant="light">
-                Reference Links : {event.referenceLinks}
-              </ListGroup.Item>
-              <br />
-              <ListGroup.Item variant="light">
-                Uploaded Files : {event.uploadedFiles}
-              </ListGroup.Item>
+              {params.userType === "student" ? (
+                <div>
+                  <ListGroup.Item variant="light">
+                    CreatedBy : Prof. {event.createdBy}
+                  </ListGroup.Item>
+                  <br />
+                </div>
+              ) : null}
+              <Table responsive striped bordered hover>
+                <thead>
+                  <tr>
+                    <th>Registration Deadline</th>
+                    <th>Submission Deadline</th>
+                    <th>Minimum Team Size</th>
+                    <th>Maximum Team Size</th>
+                    <th>Maximum Marks</th>
+                    <th>Reference Links</th>
+                    <th>Uploaded Files</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>{event.registrationDeadline.substring(0, 10)}</td>
+                    <td>{event.submissionDeadline.substring(0, 10)}</td>
+                    <td>{event.minTeamSize}</td>
+                    <td>{event.maxTeamSize}</td>
+                    <td>{event.maxMarks}</td>
+                    <td>
+                      {event.referenceLinks.map((item, i) => (
+                        <div>
+                          {item}
+                          <br />
+                        </div>
+                      ))}
+                    </td>
+                    <td>{event.uploadedFiles}</td>
+                  </tr>
+                </tbody>
+              </Table>
             </Card.Text>
           </Card.Body>
         </Card>

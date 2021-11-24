@@ -37,6 +37,9 @@ const TeacherDashboard = () => {
   useEffect(() => {
     setWindowTitle(pageTitles.TEACHER_DASHBOARD);
   }, []);
+
+  
+
   let [card, setCard] = useState([]);
   let [loading, setLoading] = useState(true);
   useEffect(() => {
@@ -53,7 +56,7 @@ const TeacherDashboard = () => {
                 cursor: "pointer",
               }}
             >
-              <Card.Header>{item.createdOn}</Card.Header>
+              <Card.Header>Created On : {item.createdOn}</Card.Header>
 
               <Card.Body
                 onClick={() => history.push("/event/teacher/" + item._id)}
@@ -84,6 +87,9 @@ const TeacherDashboard = () => {
                 >
                   View Team Details{" "}
                 </Button>
+              </Card.Footer>
+              <Card.Footer>
+                <Button variant="success" onClick={()=>history.push("/scheduler/"  + item._id)}>Schedule Presentations</Button>
               </Card.Footer>
             </Card>
           </Col>

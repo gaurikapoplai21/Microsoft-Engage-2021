@@ -1,7 +1,7 @@
 import React from 'react'
 import {Modal,Form,Button} from 'react-bootstrap'
 import {useState} from 'react'
-import { GET, PATCH } from "../config/api";
+import { POST, PATCH } from "../config/api";
 
 
 const ProjectEvaluate = (props) => {
@@ -14,7 +14,12 @@ const ProjectEvaluate = (props) => {
      };
 
      const handleSubmit = () => {
-         console.log(marks)
+
+         const emailData = {
+           "eventName" : props.eventName,
+           "contacts" : props.emails
+         }
+         console.log(emailData)
          let res = Object.keys(marks).map((key) => marks[key]);
          const data = {
              "marksScored" : marks
@@ -27,13 +32,28 @@ const ProjectEvaluate = (props) => {
           };
           evaluateTeam()
             .then((response) => {
-              alert("Project evaluation successful");
-              props.hidemodalcallback();
+              console.log(response)
             })
             .catch((err) => {
               console.log(err);
               alert("Project evaluation unsuccessful");
             });
+
+             const sendEmail = async () => {
+               const response = await POST(
+                 "/email/marksuploaded",
+                 emailData
+               );
+             };
+             sendEmail()
+               .then((response) => {
+                 alert("Project evaluation successful");
+                 props.hidemodalcallback();
+               })
+               .catch((err) => {
+                 console.log(err);
+                 alert("Email reminder not successful");
+               });
 
      }
     return (

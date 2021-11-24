@@ -4,6 +4,7 @@ import json
 from bson.objectid import ObjectId
 from flask_cors import CORS, cross_origin
 from datetime import datetime
+import maildemo
 
 #Flask app config
 app = Flask(__name__, static_folder='static')
@@ -805,6 +806,159 @@ def active_link(teamId):
         )
 
 ##############################################
+
+@app.route("/email/initiatereminder", methods=["POST"])
+@cross_origin()
+def initiate_reminder():
+    try:
+        eventName = request.json["eventName"]
+        contacts = request.json["contacts"]
+        subject = "Submission Due for " + eventName
+        body = """This is a reminder email that your team has not made any submission for the project - """ + eventName + """. Please make a submission before the deadline on the Team-Up portal."""
+        maildemo.sendmail(contacts,subject,body)
+
+        return Response(
+            response = json.dumps({"message":"emails sent successfully"}),
+            status = 200,
+            mimetype="application/json"
+
+        )   
+    except Exception as e:
+        print(e)
+        return Response(
+            response = json.dumps({"message":"emails not sent"}),
+            status = 500,
+            mimetype="application/json"
+
+        )    
+
+@app.route("/email/eventcreated/teacher", methods=["POST"])
+@cross_origin()
+def event_created1():
+    try:
+        eventName = request.json["eventName"]
+        contacts = request.json["contacts"]
+        subject = "Event Created -  " + eventName
+        body = """This is a confirmation email that you have created an event - """ + eventName + """ successfully on the Team-Up portal. This event is now live for all the students."""
+        maildemo.sendmail(contacts,subject,body)
+
+        return Response(
+            response = json.dumps({"message":"emails sent successfully"}),
+            status = 200,
+            mimetype="application/json"
+
+        )   
+    except Exception as e:
+        print(e)
+        return Response(
+            response = json.dumps({"message":"emails not sent"}),
+            status = 500,
+            mimetype="application/json"
+
+        )  
+
+@app.route("/email/eventcreated/students", methods=["POST"])
+@cross_origin()
+def event_created2():
+    try:
+        eventName = request.json["eventName"]
+        contacts = request.json["contacts"]
+        teacher = request.json["teacher"]
+        subject = "Event Created -  " + eventName
+        body = """This mail is to inform you that the event - """ + eventName + """ was created by Prof. """ + teacher + """ on the Team-Up portal. Login to the Team-Up portal for more details."""
+        maildemo.sendmail(contacts,subject,body)
+
+        return Response(
+            response = json.dumps({"message":"emails sent successfully"}),
+            status = 200,
+            mimetype="application/json"
+
+        )   
+    except Exception as e:
+        print(e)
+        return Response(
+            response = json.dumps({"message":"emails not sent"}),
+            status = 500,
+            mimetype="application/json"
+
+        )    
+
+@app.route("/email/teamregistered", methods=["POST"])
+@cross_origin()
+def team_registered():
+    try:
+        eventName = request.json["eventName"]
+        contacts = request.json["contacts"]
+        subject = "Team Created for the event -  " + eventName
+        body = """This is a confirmation email for successful registration of your team for the event - """ + eventName + """ on the Team-Up portal. Your professor will now be able to view the registered team details."""
+        maildemo.sendmail(contacts,subject,body)
+
+        return Response(
+            response = json.dumps({"message":"emails sent successfully"}),
+            status = 200,
+            mimetype="application/json"
+
+        )   
+    except Exception as e:
+        print(e)
+        return Response(
+            response = json.dumps({"message":"emails not sent"}),
+            status = 500,
+            mimetype="application/json"
+
+        )  
+
+@app.route("/email/submissionreceived", methods=["POST"])
+@cross_origin()
+def submission_received():
+    try:
+        eventName = request.json["eventName"]
+        contacts = request.json["contacts"]
+        subject = "Successful submission for the event -  " + eventName
+        body = """This is a confirmation email for successful submission of the deliverables from your team for the event - """ + eventName + """ on the Team-Up portal. Your professor will now be able to view the submission."""
+        maildemo.sendmail(contacts,subject,body)
+
+        return Response(
+            response = json.dumps({"message":"emails sent successfully"}),
+            status = 200,
+            mimetype="application/json"
+
+        )   
+    except Exception as e:
+        print(e)
+        return Response(
+            response = json.dumps({"message":"emails not sent"}),
+            status = 500,
+            mimetype="application/json"
+
+        )   
+
+@app.route("/email/marksuploaded", methods=["POST"])
+@cross_origin()
+def marks_uploaded():
+    try:
+        eventName = request.json["eventName"]
+        contacts = request.json["contacts"]
+        subject = "Marks uploaded for the event -  " + eventName
+        body = """This email is to inform you that your professor has completed evaluation of your team for the event - """ + eventName + """ on the Team-Up portal. Login to view your marks on the MySubmissions tab."""
+        maildemo.sendmail(contacts,subject,body)
+
+        return Response(
+            response = json.dumps({"message":"emails sent successfully"}),
+            status = 200,
+            mimetype="application/json"
+
+        )   
+    except Exception as e:
+        print(e)
+        return Response(
+            response = json.dumps({"message":"emails not sent"}),
+            status = 500,
+            mimetype="application/json"
+
+        )     
+
+###############################################
 
 if __name__ == "__main__":
     app.run(port=5000,debug=True)

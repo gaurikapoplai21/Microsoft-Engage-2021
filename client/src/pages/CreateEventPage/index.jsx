@@ -85,7 +85,7 @@ const Index = () => {
     else
     {   if(data2.referenceLinks==='')
         {
-            data2.referenceLinks= "#deadbeef"
+            //data2.referenceLinks= "#deadbeef"
             
 
         }
@@ -93,15 +93,35 @@ const Index = () => {
         {
           data2.uploadedFiles= "#deadbeef"
         }
-        POST(apiEndpoints.EVENTS, data2)
+        const createTeam = async () => {
+          const response = await POST(apiEndpoints.EVENTS, data2);
+           
+        };
+        createTeam()
           .then((response) => {
-            alert("event successfully created");
-            history.push("/teacher-dashboard");
-
+            console.log(response)
+            // history.push("/teacher-dashboard");
           })
           .catch((err) => {
+            console.log(err);
             alert("event creation unsuccessful");
           });
+          const emailData = {
+            "contacts": [user.email],
+            "eventName": data2.eventName
+          }
+           const sendEmail = async () => {
+             const response = await POST("/email/eventcreated/teacher", emailData);
+           };
+           sendEmail()
+             .then((response) => {
+               alert("Event created successfully")
+               history.push("/teacher-dashboard");
+             })
+             .catch((err) => {
+               console.log(err);
+             });
+
         setEvent({
           eventName: "",
           eventDescription: "",
@@ -114,6 +134,8 @@ const Index = () => {
         setRegistrationDeadline('');
         setSubmissionDeadline('');
         setSelectedFile(null);
+
+        
 
     }
     //check for compulsory fields
