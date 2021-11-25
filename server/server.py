@@ -5,6 +5,7 @@ from bson.objectid import ObjectId
 from flask_cors import CORS, cross_origin
 from datetime import datetime
 import maildemo
+import makeSchedule
 
 #Flask app config
 app = Flask(__name__, static_folder='static')
@@ -957,6 +958,70 @@ def marks_uploaded():
             mimetype="application/json"
 
         )     
+
+###############################################
+
+@app.route("/make-schedule", methods=["POST"])
+@cross_origin()
+def make_schedule():
+    try:
+      
+      dates = request.json['selectedDate']
+      slots = request.json['numSlots']
+      duration = request.json['duration']["minutes"]
+      eventId = request.json['eventId']
+      teams = db.Teams.find({"eventId":eventId})
+      teams = list(teams)
+      names = []
+      emails = []
+      teamNames = []
+      teamIds = []
+      for obj in teams:
+          names.append(obj["names"])
+          emails.append(obj["emails"])
+          teamNames.append(obj["teamName"])
+          teamIds.append(str(obj["_id"]))
+      
+      new_dates = []
+      for obj in dates:
+          new_dates.append(datetime.strptime(obj,"%Y-%m-%dT%H:%M:%S+05:30"))
+          
+
+      #for obj in teams:
+        
+            #obj["_id"] = str(obj["_id"])
+            #obj["createdOn"] = obj["createdOn"].strftime("%d/%m/%Y, %H:%M:%S")
+            #obj["submittedOn"] = obj["submittedOn"].strftime("%d/%m/%Y, %H:%M:%S")
+      res = makeSchedule.scheduler(new_dates, slots, duration,names,emails,teamNames,teamIds)
+
+      return Response(
+            response = json.dumps(res),
+            status = 200,
+            mimetype="application/json"
+      )
+
+
+
+    except Exception as e:
+        print(e)
+        return Response(
+            response = json.dumps({"message":"emails not sent"}),
+            status = 500,
+            mimetype="application/json"
+
+        )  
+
+
+
+
+
+
+
+
+
+
+
+
 
 ###############################################
 

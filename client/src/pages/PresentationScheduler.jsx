@@ -4,17 +4,20 @@ import { selectUser } from "../features/userSlice";
 import { useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
 import { GET, POST } from "../config/api";
+import utc from "moment";
 
-import { useState,useEffect} from "react";
-import { Form, Row, Col, Button } from "react-bootstrap";
+import { useState, useEffect } from "react";
+import { Form, Row, Col, Button, Table } from "react-bootstrap";
 import "date-fns";
 import DateFnsUtils from "@date-io/date-fns";
 import {
   MuiPickersUtilsProvider,
-  KeyboardDateTimePicker
+  KeyboardDateTimePicker,
 } from "@material-ui/pickers";
 
 const PresentationScheduler = () => {
+  
+  const [schedule, setSchedule] = useState({});
   const user = useSelector(selectUser);
   const params = useParams();
   const [duration, setDuration] = useState({
@@ -25,47 +28,88 @@ const PresentationScheduler = () => {
     const value = e.target.value;
     setDuration({ ...duration, [field]: value });
   };
-  
-   const [numSlots, setNumSlots] = useState([])
-   
-    const handleChange = (e) => {
-      const field = e.target.name;
-      const value = e.target.value;
-      if(numSlots.length === parseInt(field))
-      {
-         setNumSlots((numSlots) => [...numSlots, value]);
-      } else{
-          numSlots[parseInt(field)] = value;
-      }
-      
+
+  const [numSlots, setNumSlots] = useState([]);
+
+  const handleChange = (e) => {
+    const field = e.target.name;
+    const value = e.target.value;
+    if (numSlots.length === parseInt(field)) {
+      setNumSlots((numSlots) => [...numSlots, value]);
+    } else {
+      numSlots[parseInt(field)] = value;
+    }
+  };
+
+  const [selectedDate, setSelectedDate] = useState([]);
+
+  const handleSubmit = () => {
+    selectedDate.map(
+      (date, i) => (selectedDate[i] = utc(date.toISOString()).format())
+    );
+    console.log(selectedDate);
+    console.log(numSlots);
+    console.log(duration);
+    const data = {
+      selectedDate: selectedDate,
+      numSlots: numSlots,
+      duration: duration,
+      eventId: params.id,
     };
-   
-    const [selectedDate, setSelectedDate] = useState([])
-   
-   
-   const handleSubmit = () =>{
-       
-       console.log(selectedDate);
-       console.log(numSlots)
-       console.log(duration)
-       
-   }
+    const requestSchedule = async () => {
+      const res = await POST("/make-schedule", data);
+      console.log(res);
+      setSchedule(res.data);
+    };
+    requestSchedule()
+      .then((response) => {})
+      .catch((err) => {
+        console.log(err);
+        alert("Schedule Generation not successful");
+      });
+  };
 
-  const [display, setDisplay] = useState(0)
+  const [display, setDisplay] = useState(0);
 
-  const [numTeams, setNumTeams] = useState(0)
-  
-   useEffect(() => {
-     GET("/teams/event/" + params.id)
-       .then((res) => {
-        setNumTeams(res.data.length)
+  const [numTeams, setNumTeams] = useState(0);
 
+  useEffect(() => {
+    GET("/teams/event/" + params.id)
+      .then((res) => {
+        setNumTeams(res.data.length);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }, []);
+
+   const scheduleData = Object.keys(schedule).map((d, key) => {
+     return (
+       <tr>
+         <td>{schedule[d].startDate}</td>
+         <td>{schedule[d].startTime}</td>
+         <td>{schedule[d].duration}</td>
+         <td>{schedule[d].teamName}</td>
+         <td>
+           {schedule[d].names.map((member, i) => (
+             <div>
+               {member}
+               <br />
+             </div>
+           ))}
+         </td>
+         <td>
+           {schedule[d].emails.map((email, i) => (
+             <div>
+               {email}
+               <br />
+             </div>
+           ))}
+         </td>
          
-       })
-       .catch((err) => {
-         console.log(err);
-       });
-   }, []);
+       </tr>
+     );
+   });
   return (
     <div>
       <Navbar usertype={user.userType} />
@@ -124,7 +168,8 @@ const PresentationScheduler = () => {
               plaintext
               readOnly
               value={
-                numSlots.reduce((a, b) => parseInt(a) + parseInt(b), 0) * parseInt(duration.minutes)
+                numSlots.reduce((a, b) => parseInt(a) + parseInt(b), 0) *
+                parseInt(duration.minutes)
               }
             />
           </Col>
@@ -209,6 +254,7 @@ const PresentationScheduler = () => {
           </div>
         </div>
       ))}
+      
       <Button
         variant="success"
         onClick={handleSubmit}
@@ -216,6 +262,30 @@ const PresentationScheduler = () => {
       >
         Generate Schedule
       </Button>
+      <br />
+      {Object.keys(schedule).length !== 0 ? (
+        <div style={{ marginLeft: "3%", marginRight: "3%" }}>
+          <Table
+            striped
+            bordered
+            hover
+            responsive
+            style={{ backgroundColor: "#E6E6FA" }}
+          >
+            <thead>
+              <tr>
+                <th>Scheduled Date</th>
+                <th>Presentation Time</th>
+                <th> Duration of Presentation</th>
+                <th>Team Name</th>
+                <th>Names of Members</th>
+                <th>Emails</th>
+              </tr>
+            </thead>
+            <tbody>{scheduleData}</tbody>
+          </Table>
+        </div>
+      ) : null}
     </div>
   );
 };
