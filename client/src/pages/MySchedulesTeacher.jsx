@@ -83,11 +83,11 @@ const MySchedulesTeacher = () => {
      .catch((err) => {
        console.log(err);
      });
- }, []);
+ }, [card]);
 
  return (
    <div>
-     <Navbar usertype={user.userType} />
+     <Navbar userType={user.userType} />
      <br />
      <div style={{ marginLeft: "2%", marginRight: "2%" }}>
        {loading === false ? card : null}

@@ -72,7 +72,7 @@ const MySchedules = () => {
 
   return (
     <div>
-      <Navbar usertype={user.userType} />
+      <Navbar userType={user.userType} />
       <br />
       <div style={{marginLeft:"2%", marginRight:"2%"}}>{loading === false ? card : null}</div>
     </div>
