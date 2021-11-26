@@ -2,7 +2,7 @@ import React from "react";
 import Navbar from "../components/Navbar/TeacherNavbar";
 import { selectUser } from "../features/userSlice";
 import { useSelector } from "react-redux";
-import { useParams } from "react-router-dom";
+import { useParams ,useHistory} from "react-router-dom";
 import { GET, POST } from "../config/api";
 import utc from "moment";
 
@@ -20,6 +20,7 @@ const PresentationScheduler = () => {
   const [schedule, setSchedule] = useState({});
   const user = useSelector(selectUser);
   const params = useParams();
+  const history = useHistory();
   const [duration, setDuration] = useState({
     minutes: "0",
   });
@@ -110,6 +111,29 @@ const PresentationScheduler = () => {
        </tr>
      );
    });
+
+  const handleRelease = () => {
+     const data = {
+       "eventId" : params.id,
+       "eventName" : params.eventName,
+       "createdBy" : user.id,
+       "schedule" : schedule
+      
+     }
+     const sendSchedule = async () => {
+       const response = await POST("/schedule", data);
+     };
+     sendSchedule()
+       .then((response) => {
+         alert("Schedule release successful");
+         history.push("/teacher-dashboard")
+       })
+       .catch((err) => {
+         console.log(err);
+         alert("Schedule release not successful");
+       });
+
+  }
   return (
     <div>
       <Navbar usertype={user.userType} />
@@ -190,9 +214,14 @@ const PresentationScheduler = () => {
           style={{ display: "inline-block", marginLeft: "1%" }}
           onClick={() => {
             if (display > 0) {
+              if(selectedDate.length === display)
+              {
+                selectedDate.pop();
+                numSlots.pop();
+
+              }
               setDisplay(display - 1);
-              selectedDate.pop();
-              numSlots.pop();
+              
             }
           }}
         >
@@ -284,6 +313,9 @@ const PresentationScheduler = () => {
             </thead>
             <tbody>{scheduleData}</tbody>
           </Table>
+          <Button onClick={handleRelease}>Release Schedule</Button>
+          <br />
+          <br />
         </div>
       ) : null}
     </div>

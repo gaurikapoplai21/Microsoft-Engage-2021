@@ -53,12 +53,22 @@ const TeacherNavbar = (props) => {
                       </Nav.Link>
                     ) : null}
                   </Nav>
-                  <Nav.Link
-                   
-                    onClick={handleLogout}
-                  >
-                    Logout
-                  </Nav.Link>
+                  <Nav>
+                    {props.userType === "student" ? (
+                      <Nav.Link
+                        onClick={() => history.push("/mySchedules/student")}
+                      >
+                        MySchedules
+                      </Nav.Link>
+                    ) : (
+                      <Nav.Link
+                        onClick={() => history.push("/mySchedules/teacher")}
+                      >
+                        MySchedules
+                      </Nav.Link>
+                    )}
+                  </Nav>
+                  <Nav.Link onClick={handleLogout}>Logout</Nav.Link>
                 </Nav>
               </Navbar.Collapse>
             </Container>

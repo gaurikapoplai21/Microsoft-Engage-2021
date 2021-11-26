@@ -18,22 +18,7 @@ const TeacherDashboard = () => {
   const user = useSelector(selectUser);
 
 
-  const deleteEvent = (eventId) => {
-     
-     DELETE(apiEndpoints.EVENTS + "/" + eventId)
-       .then((response) => {
-         alert("Event successfully deleted");
-         //window.location.reload(false);
-
-       })
-       .catch((err) => {
-         console.log(err)
-         alert("Event deletion unsuccessful");
-       });
-
-
-  }
-
+  
   useEffect(() => {
     setWindowTitle(pageTitles.TEACHER_DASHBOARD);
   }, []);
@@ -66,21 +51,6 @@ const TeacherDashboard = () => {
               </Card.Body>
               <Card.Footer>
                 <Button
-                  variant="warning"
-                  onClick={() => history.push("/edit-event/" + item._id)}
-                >
-                  Edit{" "}
-                </Button>
-                <Button
-                  variant="secondary"
-                  style={{ marginLeft: "10px" }}
-                  onClick={() => deleteEvent(item._id)}
-                >
-                  Delete{" "}
-                </Button>
-              </Card.Footer>
-              <Card.Footer>
-                <Button
                   variant="primary"
                  
                   onClick={()=>history.push("/teams/teacher/" + item._id)}
@@ -89,7 +59,7 @@ const TeacherDashboard = () => {
                 </Button>
               </Card.Footer>
               <Card.Footer>
-                <Button variant="success" onClick={()=>history.push("/scheduler/"  + item._id)}>Schedule Presentations</Button>
+                <Button variant="success" onClick={()=>history.push("/scheduler/"  + item._id + "/" + item.eventName)}>Schedule Presentations</Button>
               </Card.Footer>
             </Card>
           </Col>
@@ -101,7 +71,7 @@ const TeacherDashboard = () => {
       .catch((err) => {
         console.log(err);
       });
-  }, [card]);
+  }, []);
   const heading = {
     marginTop: "30px",
     display: "inline-block",

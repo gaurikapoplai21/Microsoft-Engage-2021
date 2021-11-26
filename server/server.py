@@ -6,6 +6,7 @@ from flask_cors import CORS, cross_origin
 from datetime import datetime
 import maildemo
 import makeSchedule
+import webbrowser
 
 #Flask app config
 app = Flask(__name__, static_folder='static')
@@ -816,6 +817,7 @@ def initiate_reminder():
         contacts = request.json["contacts"]
         subject = "Submission Due for " + eventName
         body = """This is a reminder email that your team has not made any submission for the project - """ + eventName + """. Please make a submission before the deadline on the Team-Up portal."""
+        
         maildemo.sendmail(contacts,subject,body)
 
         return Response(
@@ -1011,19 +1013,118 @@ def make_schedule():
 
         )  
 
+###############################################
+@app.route("/schedule", methods=["POST"])
+@cross_origin()
+def schedule():
+    try:
+        eventName = request.json["eventName"]
+        eventId = request.json["eventId"]
+        createdBy = request.json["createdBy"]
+        schedule = request.json["schedule"]
+        createdOn = datetime.now()
+        schedule_generated = {
+          "eventName":eventName,
+          "eventId":eventId,
+          "createdBy":createdBy,
+          "schedule":schedule,
+          "createdOn": createdOn
 
 
+        }    
+        dbResponse = db.Schedules.insert_one(schedule_generated)
+        return Response(
+            response=json.dumps(
+                {
+                    "message":"Schedule released",
+                    "teamId": f"{dbResponse.inserted_id}"
+                }
+            ),
+            status=200,
+            mimetype="application/json"
+        )
+    except Exception as e:
+        print(e)
+        return Response(
+            response = json.dumps({"message":"Schedule not released"}),
+            status = 500,
+            mimetype="application/json"
 
+        )
 
+@app.route("/schedule/all",methods=["GET"])
+@cross_origin()
+def get_all_schedules():
+    try:
+        data = db.Schedules.find()
+        data = list(data)
+        for obj in data:
+             obj["_id"] = str(obj["_id"])
+             obj["createdOn"] = obj["createdOn"].strftime("%d/%m/%Y, %H:%M:%S")
+             #obj["registrationDeadline"] = obj["registrationDeadline"].strftime("%d/%m/%Y, %H:%M:%S")
+             #obj["submissionDeadline"] = obj["submissionDeadline"].strftime("%d/%m/%Y, %H:%M:%S")
+        return Response(
+            response = json.dumps(data),
+            status=200,
+            mimetype="application/json"
+        )
 
+    except Exception as e:
+        print(e)
+        return Response(
+            response=json.dumps({"message":"Schedules cannot be displayed"}),
+            status = 500,
+            mimetype="application/json"
+        )
+@app.route("/schedule/<userId>",methods=["GET"])
+@cross_origin()
+def get_schedules_per_teacher(userId):
+    try:
+        data = db.Schedules.find({"createdBy":userId})
+        data = list(data)
+        for obj in data:
+             obj["_id"] = str(obj["_id"])
+             obj["createdOn"] = obj["createdOn"].strftime("%d/%m/%Y, %H:%M:%S")
+             #obj["registrationDeadline"] = obj["registrationDeadline"].strftime("%d/%m/%Y, %H:%M:%S")
+             #obj["submissionDeadline"] = obj["submissionDeadline"].strftime("%d/%m/%Y, %H:%M:%S")
+        return Response(
+            response = json.dumps(data),
+            status=200,
+            mimetype="application/json"
+        )
+        
+       
 
+    except Exception as e:
+        print(e)
+        return Response(
+            response=json.dumps({"message":"No schedules created by this user"}),
+            status = 500,
+            mimetype="application/json"
+        )
 
+@app.route("/schedule/<scheduleId>",methods=["DELETE"])
+@cross_origin()
+def delete_schedule(scheduleId):
+    try:
+        dbResponse = db.Schedules.delete_one({"_id":ObjectId(scheduleId)})
+        
+        return Response(
+            response=json.dumps({"message":"schedule deleted"}),
+            status=200,
+            mimetype="application/json"
+        )
 
-
-
-
+    except Exception as e:
+        print(e)
+        return Response(
+            response=json.dumps({"message":"cannot delete schedule"}),
+            status=500,
+            mimetype="application/json"
+        ),
 
 ###############################################
+
 
 if __name__ == "__main__":
     app.run(port=5000,debug=True)

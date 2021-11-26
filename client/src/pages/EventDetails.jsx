@@ -2,11 +2,12 @@ import React from 'react'
 import Navbar from "../components/Navbar/TeacherNavbar";
 import {useState,useEffect} from 'react'
 import {useHistory,useParams} from 'react-router-dom'
-import { GET, POST } from "../config/api";
+import { GET, POST,DELETE } from "../config/api";
 import { apiEndpoints } from "../constants/apiEndpoints";
 import {Card,ListGroup,Table} from 'react-bootstrap'
 import { useSelector } from "react-redux";
 import { selectUser } from "../features/userSlice";
+import {Button} from "react-bootstrap";
  
 
 
@@ -15,6 +16,19 @@ const EventDetails = () => {
     const params = useParams();
     let history = useHistory();
     const user = useSelector(selectUser);
+
+    const deleteEvent = (eventId) => {
+      DELETE(apiEndpoints.EVENTS + "/" + eventId)
+        .then((response) => {
+          alert("Event successfully deleted");
+          //window.location.reload(false);
+        })
+        .catch((err) => {
+          console.log(err);
+          alert("Event deletion unsuccessful");
+        });
+    };
+
 
 
     const [event, setEvent] = useState({
@@ -57,7 +71,28 @@ const EventDetails = () => {
     return (
       <div>
         <Navbar userType={params.userType} />
-        <h2 style={{ marginTop: "20px" }}> Event Details </h2>
+        <div>
+        <h2 style={{ marginTop: "20px",display: "inline-block" }}> Event Details </h2>
+        {(params.userType==="teacher")? 
+        <> 
+        <Button
+          variant="warning"
+          onClick={() => history.push("/edit-event/" + params.id)}
+          style={{display:"inline-block",marginLeft:"30%"}}
+        >
+          Edit{" "}
+        </Button>
+        <Button
+          variant="secondary"
+          style={{ marginLeft: "10px" }}
+          onClick={() => deleteEvent(params.id)}
+        >
+          Delete{" "}
+        </Button>
+        </>
+        :null}
+       
+        </div>
         <br />
         <Card
           className="text-center"
