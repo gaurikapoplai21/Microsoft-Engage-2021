@@ -5,6 +5,7 @@ import { GET, POST } from "../../config/api";
 import { apiEndpoints } from "../../constants/apiEndpoints";
 import { encodePassword } from "../../utils/users";
 import { Card,Form,Col} from "react-bootstrap";
+import Navbar from "../../components/Navbar/index";
 
 
 
@@ -76,7 +77,9 @@ const SignupPage = () => {
 
   return (
     <div>
-    
+      <Navbar />
+      <br />
+      <br />
       <Card border="dark" style={{ width: "40%", display: "inline-block" }}>
         <Card.Body>
           <Card.Title>Sign Up</Card.Title>

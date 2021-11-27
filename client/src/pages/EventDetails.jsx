@@ -18,16 +18,29 @@ const EventDetails = () => {
     const user = useSelector(selectUser);
 
     const deleteEvent = (eventId) => {
-      DELETE(apiEndpoints.EVENTS + "/" + eventId)
-        .then((response) => {
-          alert("Event successfully deleted");
-          //window.location.reload(false);
-        })
+      const deleteEvent = async () => {
+        const response = await DELETE(apiEndpoints.EVENTS + "/" + eventId);
+      };
+      deleteEvent().then((response) => {
+         alert("Event successfully deleted");
+          history.push("/teacher-dashboard");
+      })
         .catch((err) => {
           console.log(err);
-          alert("Event deletion unsuccessful");
+          alert("Event deletion not successful");
         });
-    };
+     
+
+      const deleteTeams = async () => {
+        const response = await DELETE("/teams/" + eventId + "/delete");
+      };
+      deleteTeams()
+        .then((response) => {})
+        .catch((err) => {
+          console.log(err);
+          alert("Teams deletion not successful");
+        });
+    };;
 
 
 
@@ -39,7 +52,6 @@ const EventDetails = () => {
       maxMarks: "",
       createdBy: user.name,
       createdOn: "",
-      uploadedFiles: "",
       referenceLinks: [],
       registrationDeadline: "",
       submissionDeadline: ""
@@ -57,7 +69,6 @@ const EventDetails = () => {
               maxMarks: res.data.maxMarks,
               createdBy: res.data.createdBy,
               createdOn: res.data.createdOn,
-              uploadedFiles: res.data.uploadedFiles,
               referenceLinks: res.data.referenceLinks,
               registrationDeadline: res.data.registrationDeadline,
               submissionDeadline: res.data.submissionDeadline
@@ -127,7 +138,6 @@ const EventDetails = () => {
                     <th>Maximum Team Size</th>
                     <th>Maximum Marks</th>
                     <th>Reference Links</th>
-                    <th>Uploaded Files</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -145,7 +155,6 @@ const EventDetails = () => {
                         </div>
                       ))}
                     </td>
-                    <td>{event.uploadedFiles}</td>
                   </tr>
                 </tbody>
               </Table>

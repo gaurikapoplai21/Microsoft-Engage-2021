@@ -6,8 +6,9 @@ import SigninPage from "../pages/SigninPage";
 import SignupPage from "../pages/SignupPage";
 import TeacherDashboard from "../pages/TeacherPages/TeacherDashboard";
 import StudentDashboard from "../pages/StudentPages/StudentDashboard";
-import LandingPage from "../pages/LandingPage";
 import NotfoundPage from "../pages/NotfoundPage";
+import SignIn from "../pages/SigninPage/index"
+import SignUp from "../pages/SignupPage/index"
 
 export const userTypes = {
   STUDENT: "student",
@@ -15,10 +16,10 @@ export const userTypes = {
 };
 
 export const signedOutRoutes = [
-  { exact: true, path: routes.SIGNUP, component: LandingPage },
-  { exact: true, path: routes.SIGNIN, component: LandingPage },
-  { exact: true, path: "/", component: LandingPage },
-  { exact: true, path: routes.HOME, component: LandingPage },
+  { exact: true, path: routes.SIGNUP, component: SignUp },
+  { exact: true, path: routes.SIGNIN, component: SignIn },
+  { exact: true, path: "/", component: SignUp },
+  { exact: true, path: routes.HOME, component: SignUp },
 
   //{ exact: false, path: routes.NOTFOUND, component: NotfoundPage },
 ];

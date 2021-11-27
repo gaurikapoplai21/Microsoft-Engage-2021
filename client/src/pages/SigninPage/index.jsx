@@ -8,6 +8,7 @@ import { Card } from "react-bootstrap";
 import { useHistory } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import {logins} from "../../features/userSlice"
+import Navbar from "../../components/Navbar/index";
 
 
 
@@ -103,6 +104,9 @@ const SigninPage = () => {
   };
   return (
     <div>
+      <Navbar />
+      <br />
+      <br />
       <Card border="dark" style={card}>
         <Card.Body>
           <Card.Title>Sign In</Card.Title>

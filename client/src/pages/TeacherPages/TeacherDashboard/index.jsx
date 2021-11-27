@@ -9,6 +9,7 @@ import { useHistory } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { selectUser } from "../../../features/userSlice";
 import Profile from "../../Profile"
+import "./TeacherDashboard.module.css"
 
 // helper functions
 import { setWindowTitle } from "../../../utils/misc";
@@ -36,9 +37,11 @@ const TeacherDashboard = () => {
               border="secondary"
               style={{
                 width: "20rem",
-                marginTop: "30px",
-                marginLeft: "10%",
+                marginTop: "3%",
+                marginLeft: "7%",
+                marginBottom: "3%",
                 cursor: "pointer",
+                backgroundColor: "",
               }}
             >
               <Card.Header>Created On : {item.createdOn}</Card.Header>
@@ -52,14 +55,22 @@ const TeacherDashboard = () => {
               <Card.Footer>
                 <Button
                   variant="primary"
-                 
-                  onClick={()=>history.push("/teams/teacher/" + item._id)}
+                  onClick={() => history.push("/teams/teacher/" + item._id)}
                 >
                   View Team Details{" "}
                 </Button>
               </Card.Footer>
               <Card.Footer>
-                <Button variant="success" onClick={()=>history.push("/scheduler/"  + item._id + "/" + item.eventName)}>Schedule Presentations</Button>
+                <Button
+                  variant="success"
+                  onClick={() =>
+                    history.push(
+                      "/scheduler/" + item._id + "/" + item.eventName
+                    )
+                  }
+                >
+                  Schedule Presentations
+                </Button>
               </Card.Footer>
             </Card>
           </Col>
@@ -73,31 +84,22 @@ const TeacherDashboard = () => {
       });
   }, []);
   const heading = {
-    marginTop: "30px",
+    marginTop: "3%",
     display: "inline-block",
   };
   const button = {
     display: "inline-block",
-    marginLeft: "70%",
+    marginLeft: "24%",
   };
-  const handleCreateEvent = () => {
-    history.push("/create-event");
-  };
+  
   return (
-    <div>
+    <div >
       <Navbar userType="teacher" />
       {/* {user? <h2 style={{marginTop:"10px"}}>Hi {user.name}!</h2>:null} */}
       {user ? <Profile /> : null}
       <div>
         <h3 style={heading}>Events Created</h3>
-        <Button
-          variant="primary"
-          size="lg"
-          style={button}
-          onClick={handleCreateEvent}
-        >
-          Create Event{" "}
-        </Button>
+       
         <Row xs={1} md={3} className="g-4">
           {loading === false ? card : null}
         </Row>

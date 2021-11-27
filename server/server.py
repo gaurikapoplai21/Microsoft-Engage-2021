@@ -116,6 +116,32 @@ def login_user(email):
             mimetype="application/json"
         )
 
+@app.route("/users/students",methods=["GET"])
+@cross_origin()
+def get_all_students():
+    try:
+        data = db.Users.find({"userType":"student"})
+        data = list(data)
+        emails = []
+        for obj in data:
+            #obj["_id"] = str(data["_id"])
+            #data["joinedOn"] = data["joinedOn"].strftime("%d/%m/%Y, %H:%M:%S")
+            emails.append(obj["email"])
+        return Response(
+            response = json.dumps(emails),
+            status=200,
+            mimetype="application/json"
+        )
+
+    except Exception as e:
+        print(e)
+        return Response(
+            response=json.dumps({"message":"No students"}),
+            status = 500,
+            mimetype="application/json"
+        )
+
+
 @app.route("/users/<userId>",methods=["PATCH"])
 @cross_origin()
 def update_user(userId):
@@ -199,7 +225,6 @@ def create_event():
         eventDescription = request.json['eventDescription']
         participants = []
         teams = []
-        uploadedFiles = request.json['uploadedFiles']
         referenceLinks = list(request.json['referenceLinks'].split("\n")) 
         event = {
 
@@ -215,7 +240,6 @@ def create_event():
         "eventDescription" : eventDescription,
         "participants" : participants,
         "teams" : teams,
-        "uploadedFiles" : uploadedFiles,
         "referenceLinks" : referenceLinks,
 
         }
@@ -335,7 +359,6 @@ def update_event(eventId):
              "maxMarks" : request.json["maxMarks"],
              "eventName" : request.json["eventName"],
              "eventDescription" : request.json["eventDescription"],
-             "uploadedFiles" : request.json["uploadedFiles"],
              "referenceLinks" : list(request.json['referenceLinks'].split("\n")) 
             }
             }
@@ -667,6 +690,26 @@ def delete_team(teamId):
             mimetype="application/json"
         ),
 
+@app.route("/teams/<eventId>/delete",methods=["DELETE"])
+@cross_origin()
+def delete_teams_of_event(eventId):
+    try:
+        dbResponse = db.Teams.delete_many({"eventId":eventId})
+        
+        return Response(
+            response=json.dumps({"message":"team deleted"}),
+            status=200,
+            mimetype="application/json"
+        )
+
+    except Exception as e:
+        print(e)
+        return Response(
+            response=json.dumps({"message":"cannot delete team"}),
+            status=500,
+            mimetype="application/json"
+        ),
+
 @app.route("/teams/<teamId>/edit",methods=["PATCH"])
 @cross_origin()
 def update_team(teamId):
@@ -944,6 +987,31 @@ def marks_uploaded():
         contacts = request.json["contacts"]
         subject = "Marks uploaded for the event -  " + eventName
         body = """This email is to inform you that your professor has completed evaluation of your team for the event - """ + eventName + """ on the Team-Up portal. Login to view your marks on the MySubmissions tab."""
+        maildemo.sendmail(contacts,subject,body)
+
+        return Response(
+            response = json.dumps({"message":"emails sent successfully"}),
+            status = 200,
+            mimetype="application/json"
+
+        )   
+    except Exception as e:
+        print(e)
+        return Response(
+            response = json.dumps({"message":"emails not sent"}),
+            status = 500,
+            mimetype="application/json"
+
+        )     
+
+@app.route("/email/schedulegenerated", methods=["POST"])
+@cross_origin()
+def schedule_generated():
+    try:
+        eventName = request.json["eventName"]
+        contacts = request.json["contacts"]
+        subject = "Schedule generated for the event -  " + eventName
+        body = """This email is to inform you that the presentation schedule has been released for the event - """ + eventName + """ on the Team-Up portal. Login to view the schedule on the MySchedules tab."""
         maildemo.sendmail(contacts,subject,body)
 
         return Response(

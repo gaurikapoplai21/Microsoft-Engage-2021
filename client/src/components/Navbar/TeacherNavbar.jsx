@@ -44,7 +44,11 @@ const TeacherNavbar = (props) => {
                       <Nav.Link onClick={() => history.push("/myTeams")}>
                         MyTeams
                       </Nav.Link>
-                    ) : null}
+                    ) : (
+                      <Nav.Link onClick={() => history.push("/create-event")}>
+                        Create Event
+                      </Nav.Link>
+                    )}
                   </Nav>
                   <Nav>
                     {props.userType === "student" ? (

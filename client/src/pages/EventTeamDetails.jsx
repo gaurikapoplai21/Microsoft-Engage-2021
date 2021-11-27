@@ -5,6 +5,9 @@ import { GET,POST } from "../config/api";
 import { Table, Button, Badge } from "react-bootstrap";
 import Navbar from "../components/Navbar/TeacherNavbar";
 import Modal from "./ProjectEvaluate";
+import { ExportReactCSV } from "./ExportReactCSV";
+
+
 
 const EventTeamDetails = () => {
   const params = useParams();
@@ -45,13 +48,15 @@ const EventTeamDetails = () => {
 
   }
 
-  
+  const [res, setRes] = useState()
 
   useEffect(() => {
     GET("/teams/event/" + params.id)
       .then((res) => {
+        setRes(res)
         let template = res.data.map((item, i) => (
-          <div>
+           <div>
+            
             <Table
               striped
               bordered
@@ -90,7 +95,7 @@ const EventTeamDetails = () => {
                   </td>
 
                   <td>{item.projectTitle}</td>
-                  <td> {item.submissionLink}</td>
+                  <td> <a href={item.submissionLink}>{item.submissionLink} </a></td>
                   <td>
                     {Object.keys(item.marksScored).map((key) => (
                       <div>
@@ -130,44 +135,6 @@ const EventTeamDetails = () => {
               </tbody>
             </Table>
           </div>
-          // <Col>
-          //   <Card
-          //     border="secondary"
-          //     style={{
-          //       marginTop: "3%",
-          //       marginLeft: "10%",
-          //       marginRight: "10%",
-          //       backgroundColor: "#E6E6FA",
-          //     }}
-          //   >
-          //     <Card.Header>Created on : {item.createdOn}</Card.Header>
-
-          //     <Card.Body style={{ cursor: "pointer" }}>
-          //       <Card.Title>{item.teamName}</Card.Title>
-          //       <Card.Text>
-          //         {item.names.map((member, i) => (
-          //           <div>
-          //             <br />
-
-          //             <ListGroup horizontal style={{display:"block"}}>
-          //               <ListGroup.Item>
-          //                 {" "}
-          //                 Name : {item.names[i]}
-          //               </ListGroup.Item>
-          //               <ListGroup.Item>
-          //                 {" "}
-          //                 Email : {item.emails[i]}
-          //               </ListGroup.Item>
-
-          //             </ListGroup>
-
-          //           </div>
-          //         ))}
-          //       </Card.Text>
-          //     </Card.Body>
-          //     <Card.Footer>Created By : {item.createdBy}</Card.Footer>
-          //   </Card>
-          // </Col>
         ));
 
         setCard(template);
@@ -186,11 +153,25 @@ const EventTeamDetails = () => {
     <div>
       <Navbar userType="teacher" />
       <h3 style={heading}>Registered Teams</h3>
-      <Button variant="primary" style={{marginLeft:"40%",cursor:"pointer"}} onClick={handleEmail}>Inititate Reminder</Button>
+      <Button
+        variant="primary"
+        style={{ marginLeft: "30%", cursor: "pointer" }}
+        onClick={handleEmail}
+      >
+        Inititate Reminder
+      </Button>
       <div style={{ marginLeft: "2%", marginRight: "2%" }}>
         {loading === false ? card : null}
       </div>
-      <Modal show={modalShow} hidemodalcallback={hidemodal} teamId={teamId} names={teamNames} members={members} emails={emails} eventName={eventName}/>
+      <Modal
+        show={modalShow}
+        hidemodalcallback={hidemodal}
+        teamId={teamId}
+        names={teamNames}
+        members={members}
+        emails={emails}
+        eventName={eventName}
+      />
     </div>
   );
 };

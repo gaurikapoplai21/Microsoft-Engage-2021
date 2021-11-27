@@ -32,7 +32,11 @@ const ProjectEvaluate = (props) => {
           };
           evaluateTeam()
             .then((response) => {
-              console.log(response)
+              
+              alert("Project evaluation successful");
+              props.hidemodalcallback();
+              window.location.reload(false);
+              
             })
             .catch((err) => {
               console.log(err);
@@ -47,8 +51,7 @@ const ProjectEvaluate = (props) => {
              };
              sendEmail()
                .then((response) => {
-                 alert("Project evaluation successful");
-                 props.hidemodalcallback();
+                 
                })
                .catch((err) => {
                  console.log(err);
@@ -88,7 +91,7 @@ const ProjectEvaluate = (props) => {
               Cancel
             </Button>
             <Button variant="primary" onClick={handleSubmit}>
-              Submit Project
+              Submit Marks
             </Button>
           </Modal.Footer>
         </Modal>

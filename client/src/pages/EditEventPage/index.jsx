@@ -26,33 +26,18 @@ const Index = () => {
   const handleSubmit = () => {
     let data2;
     console.log(registrationDeadline);
-    if (selectedFile !== null) {
-      const data3 = {
-        uploadedFiles: selectedFile.name,
-      };
+     
       const data = {
         registrationDeadline: registrationDeadline,
         submissionDeadline: submissionDeadline,
       };
+     
       data2 = {
         ...event,
         ...data,
-        ...data3,
+        
       };
-    } else {
-      const data = {
-        registrationDeadline: registrationDeadline,
-        submissionDeadline: submissionDeadline,
-      };
-      const data3 = {
-          uploadedFiles: ''
-      }
-      data2 = {
-        ...event,
-        ...data,
-        ...data3
-      };
-    }
+    
 
     if (
       data2.registrationDeadline === "" ||
@@ -63,22 +48,18 @@ const Index = () => {
       data2.maxTeamSize === "" ||
       data2.maxMarks == ""
     ) {
-      alert("All fields except Reference links and files are mandatory");
+      alert("All fields except Reference links are mandatory");
     } else {
-      if (data2.uploadedFiles === "") {
-        
-        data2.uploadedFiles = "#deadbeef";
-      }
+      
       if(data2.referenceLinks === "")
       {
-         data2.referenceLinks = "#deadbeef";
+         data2.referenceLinks = "";
       }
       PATCH(apiEndpoints.EVENTS + "/" + params.id + "/edit", data2)
         .then((response) => {
           alert("event successfully updated");
-          history.push("/teacher-dashboard");
+          history.push("/event/teacher/" + params.id);
 
-          //window.location.reload(false);
         })
         .catch((err) => {
           alert("event updation unsuccessful");
@@ -94,7 +75,6 @@ const Index = () => {
       });
       setRegistrationDeadline("");
       setSubmissionDeadline("");
-      setSelectedFile(null);
     }
   };
   const [event, setEvent] = useState({
@@ -132,10 +112,8 @@ const Index = () => {
 
   const [registrationDeadline, setRegistrationDeadline] = useState("");
   const [submissionDeadline, setSubmissionDeadline] = useState("");
-  const [selectedFile, setSelectedFile] = useState(null);
-  const handleChange = (event) => {
-    setSelectedFile(event.target.files[0]);
-  };
+  
+  
 
   return (
     <div>
@@ -165,10 +143,7 @@ const Index = () => {
               onChange={handleInput}
             />
           </Form.Group>
-          <Form.Group controlId="formFile" className="mb-3">
-            <Form.Label>Reference Files</Form.Label>
-            <Form.Control type="file" onChange={handleChange} />
-          </Form.Group>
+         
           <Form.Group className="mb-3" controlId="exampleForm.ControlTextarea1">
             <Form.Label>Reference Links</Form.Label>
             <Form.Control

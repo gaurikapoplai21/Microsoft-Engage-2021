@@ -8,6 +8,7 @@ import { useHistory } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { selectUser } from "../../../features/userSlice";
 import Profile from "../../Profile";
+import "./StudentDashboard.module.css"
 
 // helper functions
 import { setWindowTitle } from "../../../utils/misc";
@@ -28,7 +29,13 @@ const StudentDashboard = () => {
           <Col>
             <Card
               border="secondary"
-              style={{ width: "20rem", marginTop: "30px", marginLeft: "10%" }}
+              style={{
+                width: "20rem",
+                marginTop: "3%",
+                marginLeft: "7%",
+                cursor: "pointer",
+                marginBottom: "3%"
+              }}
             >
               <Card.Header>Prof. {item.createdBy}</Card.Header>
 
@@ -71,7 +78,7 @@ const StudentDashboard = () => {
   };
 
   return (
-    <div>
+    <div >
       <Navbar userType="student" />
       {/* {user? <h2 style={{marginTop:"10px"}}>Hi {user.name}!</h2>:null} */}
       {user ? <Profile /> : null}

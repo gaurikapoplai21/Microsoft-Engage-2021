@@ -42,7 +42,7 @@ useEffect(() => {
                 <td>{item.teamName}</td>
                 <td>{item.projectTitle}</td>
 
-                <td>{item.submissionLink}</td>
+                <td><a href={item.submissionLink}>{item.submissionLink} </a></td>
                 <td>{item.submittedOn}</td>
                 <td>{item.marksScored[user.id]}</td>
               </tr>

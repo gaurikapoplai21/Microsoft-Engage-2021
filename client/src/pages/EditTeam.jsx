@@ -80,7 +80,7 @@ const handleSubmit = () => {
       PATCH("/teams/" + params.id + "/edit", data)
         .then((res) => {
           alert("Team edited successfully!");
-          history.push("/student-dashboard");
+          history.push("/myTeams");
         })
         .catch((err) => {
           console.log(err);

@@ -116,7 +116,7 @@ const MyTeams = () => {
       DELETE("/teams/" + teamId)
         .then((response) => {
           alert("Team successfully deleted");
-          //window.location.reload(false);
+          window.location.reload(false);
         })
         .catch((err) => {
           console.log(err);

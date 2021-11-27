@@ -88,6 +88,8 @@ const RegisterTeam = (props) => {
        
        POST("/teams", data).then((res) => {
            console.log(res)
+           alert("Team created successfully!");
+           history.push("/student-dashboard");
          })
          .catch((err) => {
            console.log(err);
@@ -101,8 +103,7 @@ const RegisterTeam = (props) => {
      sendEmail()
        .then((response) => {
          console.log(response);
-         alert("Team created successfully!");
-         history.push("/student-dashboard");
+         
        })
        .catch((err) => {
          console.log(err);

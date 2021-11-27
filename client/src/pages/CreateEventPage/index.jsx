@@ -11,11 +11,9 @@ import { useHistory } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { selectUser } from "../../features/userSlice";
 
-
 const Index = () => {
   let history = useHistory();
-    const user = useSelector(selectUser);
-
+  const user = useSelector(selectUser);
 
   const handleInput = (e) => {
     const field = e.target.name;
@@ -31,119 +29,113 @@ const Index = () => {
     maxTeamSize: "",
     maxMarks: "",
     createdBy: user.name,
-    createdId : user.id
+    createdId: user.id,
   });
-  const [registrationDeadline, setRegistrationDeadline] = useState('');
-  const [submissionDeadline, setSubmissionDeadline] = useState('');
-  const [selectedFile, setSelectedFile] = useState(null);
-  const handleChange = (event) => {
-    setSelectedFile(event.target.files[0]);
-  };
+  const [registrationDeadline, setRegistrationDeadline] = useState("");
+  const [submissionDeadline, setSubmissionDeadline] = useState("");
+  
 
   const handleSubmit = () => {
     let data2;
-    console.log(selectedFile)
-    if(selectedFile !== null)
-    {
-        const data3 = {
-          uploadedFiles: selectedFile.name,
-        };
-        const data = {
-          registrationDeadline: registrationDeadline,
-          submissionDeadline: submissionDeadline,
-        };
-         data2 = {
-          ...event,
-          ...data,
-          ...data3,
-        };
-
-    }
-    else
-    {
-         const data = {
-           registrationDeadline: registrationDeadline,
-           submissionDeadline: submissionDeadline
-         };
-         const data3 = {
-           uploadedFiles: ''
-         }
-          data2 = {
-           ...event,
-           ...data,
-           ...data3
-         };
-
-    }
     
+      const data = {
+        registrationDeadline: registrationDeadline,
+        submissionDeadline: submissionDeadline,
+      };
+      
+      data2 = {
+        ...event,
+        ...data
+       
+      };
     
-    if(data2.registrationDeadline===''||data2.submissionDeadline===''||data2.eventName===''||
-    data2.eventDescription===''||data2.minTeamSize===''||data2.maxTeamSize===''||data2.maxMarks=='')
-    {
-        alert("All fields except Reference links and files are mandatory")
-    }
-    else
-    {   if(data2.referenceLinks==='')
-        {
-            //data2.referenceLinks= "#deadbeef"
-            
 
-        }
-        if(data2.uploadedFiles==='')
-        {
-          data2.uploadedFiles= "#deadbeef"
-        }
-        const createTeam = async () => {
-          const response = await POST(apiEndpoints.EVENTS, data2);
-           
+    if (
+      data2.registrationDeadline === "" ||
+      data2.submissionDeadline === "" ||
+      data2.eventName === "" ||
+      data2.eventDescription === "" ||
+      data2.minTeamSize === "" ||
+      data2.maxTeamSize === "" ||
+      data2.maxMarks == ""
+    ) {
+      alert("All fields except Reference links are mandatory");
+    } else {
+     
+     
+      const createTeam = async () => {
+        const response = await POST(apiEndpoints.EVENTS, data2);
+      };
+      createTeam()
+        .then((response) => {
+          console.log(response);
+          alert("Event created successfully");
+          history.push("/teacher-dashboard");
+        })
+        .catch((err) => {
+          console.log(err);
+          alert("event creation unsuccessful");
+        });
+
+      const emailData = {
+        contacts: [user.email],
+        eventName: data2.eventName,
+      };
+      const sendEmail = async () => {
+        const response = await POST("/email/eventcreated/teacher", emailData);
+      };
+      sendEmail()
+        .then((response) => {
+          //  alert("Event created successfully")
+          //  history.push("/teacher-dashboard");
+        })
+        .catch((err) => {
+          alert("Email reminder to teacher not successful")
+        });
+
+      const getEmails = async () => {
+        const response = await GET("/users/students");
+        const emailData = {
+          eventName: data2.eventName,
+          contacts: response.data,
+          teacher: user.name
         };
-        createTeam()
+      
+        const sendEmail = async () => {
+          const response = await POST("/email/eventcreated/students", emailData);
+        };
+        sendEmail()
           .then((response) => {
-            console.log(response)
-            // history.push("/teacher-dashboard");
+            
           })
           .catch((err) => {
             console.log(err);
-            alert("event creation unsuccessful");
+            alert("Email reminder to students not successful");
           });
-          const emailData = {
-            "contacts": [user.email],
-            "eventName": data2.eventName
-          }
-           const sendEmail = async () => {
-             const response = await POST("/email/eventcreated/teacher", emailData);
-           };
-           sendEmail()
-             .then((response) => {
-               alert("Event created successfully")
-               history.push("/teacher-dashboard");
-             })
-             .catch((err) => {
-               console.log(err);
-             });
-
-        setEvent({
-          eventName: "",
-          eventDescription: "",
-          referenceLinks: "",
-          minTeamSize: "",
-          maxTeamSize: "",
-          maxMarks: "",
-          createdBy: user.name,
+      };
+      getEmails()
+        .then((response) => {})
+        .catch((err) => {
+          console.log(err);
         });
-        setRegistrationDeadline('');
-        setSubmissionDeadline('');
-        setSelectedFile(null);
 
-        
-
+      setEvent({
+        eventName: "",
+        eventDescription: "",
+        referenceLinks: "",
+        minTeamSize: "",
+        maxTeamSize: "",
+        maxMarks: "",
+        createdBy: user.name,
+      });
+      setRegistrationDeadline("");
+      setSubmissionDeadline("");
     }
     //check for compulsory fields
-    
   };
   return (
     <div>
-      <Navbar userType="teacher"/>
+      <Navbar userType="teacher" />
       <br />
       <h2> Create an Event </h2>
       <br />
@@ -169,10 +161,7 @@ const Index = () => {
               onChange={handleInput}
             />
           </Form.Group>
-          <Form.Group controlId="formFile" className="mb-3">
-            <Form.Label>Reference Files</Form.Label>
-            <Form.Control type="file" onChange={handleChange} />
-          </Form.Group>
+         
           <Form.Group className="mb-3" controlId="exampleForm.ControlTextarea1">
             <Form.Label>Reference Links</Form.Label>
             <Form.Control
@@ -236,7 +225,11 @@ const Index = () => {
             </Col>
           </Row>
           <br />
-          <Button onClick={handleSubmit} variant="contained" style={{marginBottom:"20px"}}>
+          <Button
+            onClick={handleSubmit}
+            variant="contained"
+            style={{ marginBottom: "20px" }}
+          >
             Submit{" "}
           </Button>
         </Form>

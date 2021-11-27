@@ -6,11 +6,7 @@ from email.message import EmailMessage
 EMAIL_ADDRESS = os.environ.get('EMAIL_USER')
 EMAIL_PASSWORD = os.environ.get('EMAIL_PASS')
 
-
-
-
 def sendmail(contacts,subject,body):
-
 
         contacts = contacts
 

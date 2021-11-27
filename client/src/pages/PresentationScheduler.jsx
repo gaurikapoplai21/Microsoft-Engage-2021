@@ -29,7 +29,8 @@ const PresentationScheduler = () => {
     const value = e.target.value;
     setDuration({ ...duration, [field]: value });
   };
-
+  const [disabled, setDisabled] = useState(true)
+  const [clicked, setClicked] = useState(false)
   const [numSlots, setNumSlots] = useState([]);
 
   const handleChange = (e) => {
@@ -40,6 +41,10 @@ const PresentationScheduler = () => {
     } else {
       numSlots[parseInt(field)] = value;
     }
+    if (disabled === true && clicked === false) {
+      setDisabled(false);
+    }
+    
   };
 
   const [selectedDate, setSelectedDate] = useState([]);
@@ -48,9 +53,7 @@ const PresentationScheduler = () => {
     selectedDate.map(
       (date, i) => (selectedDate[i] = utc(date.toISOString()).format())
     );
-    console.log(selectedDate);
-    console.log(numSlots);
-    console.log(duration);
+    
     const data = {
       selectedDate: selectedDate,
       numSlots: numSlots,
@@ -59,15 +62,21 @@ const PresentationScheduler = () => {
     };
     const requestSchedule = async () => {
       const res = await POST("/make-schedule", data);
-      console.log(res);
       setSchedule(res.data);
     };
     requestSchedule()
-      .then((response) => {})
+      .then((response) => {
+        
+      })
       .catch((err) => {
         console.log(err);
         alert("Schedule Generation not successful");
       });
+
+      setDisabled(true);
+      setClicked(true);
+
+     
   };
 
   const [display, setDisplay] = useState(0);
@@ -111,7 +120,6 @@ const PresentationScheduler = () => {
        </tr>
      );
    });
-
   const handleRelease = () => {
      const data = {
        "eventId" : params.id,
@@ -120,18 +128,50 @@ const PresentationScheduler = () => {
        "schedule" : schedule
       
      }
-     const sendSchedule = async () => {
-       const response = await POST("/schedule", data);
-     };
-     sendSchedule()
-       .then((response) => {
-         alert("Schedule release successful");
-         history.push("/teacher-dashboard")
-       })
-       .catch((err) => {
-         console.log(err);
-         alert("Schedule release not successful");
-       });
+      const getEmails = async () => {
+        const response = await GET("/users/students");
+        //setEmails(response.data);
+        const emailData = {
+          eventName: params.eventName,
+          contacts: response.data,
+        };
+        const sendSchedule = async () => {
+          const response = await POST("/schedule", data);
+        };
+        sendSchedule()
+          .then((response) => {
+            console.log("post successful");
+          })
+          .catch((err) => {
+            console.log(err);
+            alert("Schedule release not successful");
+          });
+
+        const sendEmail = async () => {
+          const response = await POST("/email/schedulegenerated", emailData);
+        };
+        sendEmail()
+          .then((response) => {
+            alert("Schedule release successful");
+            history.push("/teacher-dashboard");
+          })
+          .catch((err) => {
+            console.log(err);
+            alert("Email reminder not successful");
+          });
+      };
+      getEmails()
+        .then((response) => {
+          
+        })
+        .catch((err) => {
+          console.log(err);
+          
+        });
+    
+     
+     
+     
 
   }
   return (
@@ -288,6 +328,7 @@ const PresentationScheduler = () => {
         variant="success"
         onClick={handleSubmit}
         style={{ marginBottom: "2%" }}
+        disabled={disabled}
       >
         Generate Schedule
       </Button>

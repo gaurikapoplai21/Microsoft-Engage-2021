@@ -25,7 +25,8 @@ const ProjectSubmission = (props) => {
           };
           editTeam()
             .then((response) => {
-              
+              alert("Project submission successful");
+              props.hidemodalcallback();
             })
             .catch((err) => {
               console.log(err);
@@ -37,8 +38,7 @@ const ProjectSubmission = (props) => {
             };
             sendEmail()
               .then((response) => {
-                alert("Project submission successful");
-                props.hidemodalcallback();
+                
               })
               .catch((err) => {
                 console.log(err);

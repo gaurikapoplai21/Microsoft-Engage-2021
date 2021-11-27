@@ -1,7 +1,6 @@
 import { Fragment, useState } from "react";
 import "./App.css";
 import { Router, Route, Switch } from "react-router-dom";
-import LandingPage from "../src/pages/LandingPage"
 import TeacherDashboard from "../src/pages/TeacherPages/TeacherDashboard/index"
 import StudentDashboard from "../src/pages/StudentPages/StudentDashboard/index"
 import CreateEvent from "../src/pages/CreateEventPage/index"
@@ -15,6 +14,9 @@ import MySubmissions from "./pages/MySubmissions";
 import MySchedulesTeacher from "./pages/MySchedulesTeacher";
 import MySchedulesStudent from "./pages/MySchedulesStudent";
 import PresentationScheduler from "./pages/PresentationScheduler";
+import SignUp from "./pages/SignupPage/index"
+import SignIn from "./pages/SigninPage/index";
+import About from "./pages/About"
 
 import EditTeam from "./pages/EditTeam"
 
@@ -74,7 +76,9 @@ function App() {
               ))}
             </Fragment>
           )} */}
-          <Route exact path="/" component={LandingPage} />
+          <Route exact path="/" component={About} />
+          <Route exact path="/register" component={SignUp} />
+          <Route exact path="/login" component={SignIn} />
           <Route path="/teacher-dashboard" component={TeacherDashboard} />
           <Route path="/student-dashboard" component={StudentDashboard} />
           <Route path="/myTeams" component={MyTeams} />
