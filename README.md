@@ -133,6 +133,9 @@ python3 server.py
 | node          | 12.16.1       |
 | Python        | 3.7.3         |
    
+# Note
+1. Internet connectivity should be present while testing otherwise the mails can't be sent.
+2. Credentials for sending mails are stored as environment variables in the system. For testing locally, the .env file has been provided in the extra documents.
 
 
 
