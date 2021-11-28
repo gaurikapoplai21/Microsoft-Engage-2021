@@ -150,7 +150,7 @@ const EventDetails = () => {
                     <td>
                       {event.referenceLinks.map((item, i) => (
                         <div>
-                          {item}
+                          <a href={item}>{item} </a>
                           <br />
                         </div>
                       ))}

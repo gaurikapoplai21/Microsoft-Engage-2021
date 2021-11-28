@@ -41,7 +41,11 @@ const PresentationScheduler = () => {
     } else {
       numSlots[parseInt(field)] = value;
     }
-    if (disabled === true && clicked === false) {
+    if (
+      disabled === true &&
+      clicked === false 
+     
+    ) {
       setDisabled(false);
     }
     
@@ -71,6 +75,7 @@ const PresentationScheduler = () => {
       .catch((err) => {
         console.log(err);
         alert("Schedule Generation not successful");
+        history.push("/teacher-dashboard")
       });
 
       setDisabled(true);
@@ -140,11 +145,14 @@ const PresentationScheduler = () => {
         };
         sendSchedule()
           .then((response) => {
-            console.log("post successful");
+            
+            alert("Schedule release successful");
+            history.push("/teacher-dashboard");
           })
           .catch((err) => {
             console.log(err);
             alert("Schedule release not successful");
+            history.push("/teacher-dashboard");
           });
 
         const sendEmail = async () => {
@@ -152,8 +160,7 @@ const PresentationScheduler = () => {
         };
         sendEmail()
           .then((response) => {
-            alert("Schedule release successful");
-            history.push("/teacher-dashboard");
+           
           })
           .catch((err) => {
             console.log(err);
