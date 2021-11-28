@@ -24,7 +24,6 @@ def scheduler(dates,slots,duration,names,emails,teamNames,teamIds):
             time_change = timedelta(minutes=int(duration))
             time += time_change
 
-    print(response)
     return response
 
 

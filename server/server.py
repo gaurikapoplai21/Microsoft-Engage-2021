@@ -6,7 +6,10 @@ from flask_cors import CORS, cross_origin
 from datetime import datetime
 import maildemo
 import makeSchedule
-import webbrowser
+from dotenv import load_dotenv
+import os
+
+load_dotenv()
 
 #Flask app config
 app = Flask(__name__, static_folder='static')
@@ -16,17 +19,21 @@ app.config['CORS_HEADERS'] = 'Content-Type'
 
 #Connect with Mongodb client
 try:
-    mongo = pymongo.MongoClient(
-        host="localhost",
-        port=27017,
-        serverSelectionTimeoutMS=1000
-    )
-    db = mongo.teamup
-    mongo.server_info()
+    #mongo = pymongo.MongoClient(
+        #host="localhost",
+        #port=27017,
+        #serverSelectionTimeoutMS=1000
+    #)
+    #db = mongo.teamup
+    #mongo.server_info()
+    mongo = pymongo.MongoClient(os.getenv("CONN_STRING"))
+    db = mongo.get_database('teamup')
 
 
 
-except:
+
+except Exception as e:
+    print(e)
     print("ERROR - Cannot connect it to db")
 
 
