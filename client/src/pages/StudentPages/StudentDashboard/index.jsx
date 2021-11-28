@@ -17,9 +17,13 @@ const StudentDashboard = () => {
   let history = useHistory();
   const user = useSelector(selectUser);
 
+  
+
   useEffect(() => {
     setWindowTitle(pageTitles.STUDENT_DASHBOARD);
   }, []);
+  
+
   let [card, setCard] = useState([]);
   let [loading, setLoading] = useState(true);
   useEffect(() => {
@@ -32,7 +36,7 @@ const StudentDashboard = () => {
               style={{
                 width: "20rem",
                 marginTop: "3%",
-                marginLeft: "7%",
+                marginLeft: "10%",
                 cursor: "pointer",
                 marginBottom: "3%"
               }}

@@ -38,7 +38,7 @@ const TeacherDashboard = () => {
               style={{
                 width: "20rem",
                 marginTop: "3%",
-                marginLeft: "7%",
+                marginLeft: "10%",
                 marginBottom: "3%",
                 cursor: "pointer",
                 backgroundColor: "",
