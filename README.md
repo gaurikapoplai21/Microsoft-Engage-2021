@@ -133,9 +133,21 @@ python3 server.py
 | node          | 12.16.1       |
 | Python        | 3.7.3         |
    
+   
+# Tech Stack
+
+### Front-end : React.js
+redux, axios, react-hooks, react-bootstrap, material-ui
+
+### Back-end : Python
+flask, smtplib, pymongo
+
+### Database : MongoDB Atlas
+
 # Note
-1. Internet connectivity should be present while testing otherwise the mails can't be sent.
-2. Credentials for sending mails are stored as environment variables in the system. For testing locally, the .env file has been provided in the extra documents.
+1. Internet connectivity should be present while testing even locally because MongoDB atlas is used for database and smtplib also reqquires internet connectivity.
+2. Credentials for sending mails,database connections strings are stored as environment variables in the system. For testing locally, the .env file has been provided in the extra documents (through the submission portal). This is because a .env file must not be included in a repository. The .env file provided should be placed inside
+`(server)` folder. (Same directory as server.py)
 
 
 
