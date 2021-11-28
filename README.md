@@ -1,5 +1,10 @@
 # Microsoft Engage 2021 Project | Team-Up
-A portal for automating the process of teachers  to initiate a project and for students to receive information about these projects and form teams accordingly within a deadline. This enables  teachers to get organized information about the teams formed for a project.  This portal can be extended to cater to hackathons too. Students will be suggested team members according to preferred skills and interests.
+
+Team-Up is a platform to automate the process of project management at schools and colleges. It allows teachers to create events for projects/assignments and for students to form teams and register themselves for the events. The teachers receive collated information about all the teams registered. Students can submit their GitHub links for the projects and the teachers can assign marks for their submissions.
+
+This portal also has an automatic scheduler for conducting presentations. The teachers have to specify the dates and times as per their availability and a schedule is generated where all the registered teams are allocated a slot for their presentations. This generated schedule is then available to both teachers and students.
+
+Additionally, for every event creation, project submission, schedule release and other important notification,emails are sent to the concerned users.
 
 # Table of Contents
 
