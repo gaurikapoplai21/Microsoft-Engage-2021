@@ -6,6 +6,8 @@ A portal for automating the process of teachers  to initiate a project and for s
 * [Installation and Setup](#installation-and-setup)
 * [System Specifications](#system-specifications)
 * [Documentation](https://github.com/gaurikapoplai21/Microsoft-Engage-2021/tree/master/documentation)
+* [Tech Stack](#tech-stack)
+* [Note](#note)
 
 # Installation and Setup
 Please follow the below instructions inorder to set up the repository and run the project on your system.
@@ -145,7 +147,7 @@ flask, smtplib, pymongo
 ### Database : MongoDB Atlas
 
 # Note
-1. Internet connectivity should be present while testing even locally because MongoDB atlas is used for database and smtplib also reqquires internet connectivity.
+1. Internet connectivity should be present while testing even locally because MongoDB Atlas is used as database and smtplib also requires internet connectivity.
 2. Credentials for sending mails,database connections strings are stored as environment variables in the system. For testing locally, the .env file has been provided in the extra documents (through the submission portal). This is because a .env file must not be included in a repository. The .env file provided should be placed inside
 `(server)` folder. (Same directory as server.py)
 
