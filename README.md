@@ -6,6 +6,11 @@ This portal also has an automatic scheduler for conducting presentations. The te
 
 Additionally, for every event creation, project submission, schedule release and other important notification,emails are sent to the concerned users.
 
+
+# Hosted Site
+
+https://react-frontend-teamup.herokuapp.com/
+
 # Table of Contents
 
 * [Installation and Setup](#installation-and-setup)
