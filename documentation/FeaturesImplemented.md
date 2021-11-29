@@ -40,5 +40,5 @@ Emails are sent -
 3. To concerned students on registration of their team
 4. To concerned students on making a submission for the event
 5. To concerned students when their marks are uploaded
-6. To concerned students for giving them a reminder to make their submissions for the event `(Initiate Reminder Buuton)`
+6. To concerned students for giving them a reminder to make their submissions for the event `Initiate Reminder Button`
 7. To all students whenever a schedule is released
